@@ -1,4 +1,4 @@
-import { ... } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
 
@@ -20,17 +20,11 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-6">
-          <Link to="/" className="text-sm hover:text-primary-100 transition-colors">
-            Home
-          </Link>
-          <Link to="/products" className="text-sm hover:text-primary-100 transition-colors">
-            Products
-          </Link>
+          <Link to="/" className="text-sm hover:text-primary-100 transition-colors">Home</Link>
+          <Link to="/products" className="text-sm hover:text-primary-100 transition-colors">Products</Link>
           {user ? (
             <>
-              <Link to="/orders" className="text-sm hover:text-primary-100 transition-colors">
-                My Orders
-              </Link>
+              <Link to="/orders" className="text-sm hover:text-primary-100 transition-colors">My Orders</Link>
               <div className="flex items-center gap-3">
                 <span className="text-sm text-primary-100">Hi, {user.username}</span>
                 <button
@@ -43,27 +37,14 @@ export default function Navbar() {
             </>
           ) : (
             <div className="flex items-center gap-3">
-              <Link
-                to="/login"
-                className="text-sm hover:text-primary-100 transition-colors"
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="text-sm bg-white text-primary-600 px-3 py-1.5 rounded-lg font-medium hover:bg-primary-50 transition-colors"
-              >
-                Register
-              </Link>
+              <Link to="/login" className="text-sm hover:text-primary-100 transition-colors">Login</Link>
+              <Link to="/register" className="text-sm bg-white text-primary-600 px-3 py-1.5 rounded-lg font-medium hover:bg-primary-50 transition-colors">Register</Link>
             </div>
           )}
         </div>
 
         {/* Mobile menu button */}
-        <button
-          className="md:hidden"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
+        <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
           <span className="text-2xl">{menuOpen ? '✕' : '☰'}</span>
         </button>
       </div>
