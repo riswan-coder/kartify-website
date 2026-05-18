@@ -9,12 +9,15 @@ export default function MyOrders() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user) { navigate('/login'); return; }
-    getMyOrders()
-      .then(res => setOrders(res.data))
-      .finally(() => setLoading(false));
-  }, [user]);
+ useEffect(() => {
+  if (!user) {
+    navigate('/login');
+    return;
+  }
+  getMyOrders()
+    .then(res => setOrders(res.data))
+    .finally(() => setLoading(false));
+}, [user, navigate]);
 
   const statusColors = {
     pending: 'bg-yellow-50 text-yellow-700',

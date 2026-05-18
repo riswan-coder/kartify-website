@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 export default function Navbar() {
   const { user, logoutUser } = useAuth();
-  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
