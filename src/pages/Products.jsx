@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useEffect, useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { getProducts } from '../api/products';
 
 export default function Products() {
@@ -8,19 +8,8 @@ export default function Products() {
   const [search, setSearch] = useState('');
   const [gender, setGender] = useState('');
   const [type, setType] = useState('');
-  const [searchParams] = useSearchParams();
 
-  useEffect(() => {
-    const q = searchParams.get('search') || '';
-    setSearch(q);
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => fetchProducts(), 400);
-    return () => clearTimeout(timer);
-  }, [search, gender, type]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
       const params = {};
@@ -32,13 +21,17 @@ export default function Products() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [search, gender, type]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => fetchProducts(), 400);
+    return () => clearTimeout(timer);
+  }, [fetchProducts]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Search Products</h1>
 
-      {/* Search and filters */}
       <div className="bg-white rounded-xl border border-gray-200 p-4 mb-6">
         <input
           type="text"
@@ -82,7 +75,6 @@ export default function Products() {
         </div>
       </div>
 
-      {/* Results */}
       <p className="text-sm text-gray-500 mb-4">{products.length} products found</p>
 
       {loading ? (

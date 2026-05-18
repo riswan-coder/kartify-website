@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { registerApi, loginApi, getProfile } from '../../api/auth';
-import { useAuth } from '../../context/AuthContext';
+import { registerApi } from '../../api/auth';
 import toast from 'react-hot-toast';
 
 export default function Register() {
@@ -10,7 +9,6 @@ export default function Register() {
     password: '', confirm_password: ''
   });
   const [loading, setLoading] = useState(false);
-  const { loginUser } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {

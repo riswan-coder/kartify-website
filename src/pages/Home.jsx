@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getShops } from '../api/shops';
 import { getProducts } from '../api/products';
@@ -29,7 +29,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('');
   const [search, setSearch] = useState('');
-  const bannerRef = useRef(null);
 
   useEffect(() => {
     Promise.all([
