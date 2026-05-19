@@ -30,6 +30,16 @@ export default function ProductDetail() {
       navigate(`/login${isDirect ? '?ref=direct&shop=' + shopId : ''}`);
       return;
     }
+    // Before navigating to place order, validate size
+    if (!selectedSize) {
+      toast.error('Please select a size before ordering');
+      return;
+    }
+    // Before navigating to place order, validate size
+    if (!selectedColor) {
+      toast.error('Please select a color before ordering');
+      return;
+    }
     navigate(`/order/${product.id}${isDirect ? '?ref=direct&shop=' + shopId : ''}`, {
       state: { product, selectedSize, selectedColor }
     });
