@@ -13,9 +13,9 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center">
-            <span className="text-primary-600 font-bold text-lg">T</span>
+            <span className="text-primary-600 font-bold text-lg">k</span>
           </div>
-          <span className="text-xl font-bold tracking-wide">TrendKart</span>
+          <span className="text-xl font-bold tracking-wide">kartifys</span>
         </Link>
 
         {/* Desktop nav */}
