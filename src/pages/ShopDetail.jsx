@@ -54,7 +54,13 @@ export default function ShopDetail() {
           {/* Back or Close button */}
           {isDirect ? (
             <button
-              onClick={() => window.close()}
+              onClick={() => {
+                if (window.history.length > 1) {
+                  window.history.back();
+                } else {
+                  window.close();
+                }
+              }}
               className="flex items-center gap-2 text-primary-200 text-sm hover:text-white mb-4 bg-white bg-opacity-10 px-4 py-2 rounded-lg transition-colors"
             >
               <span className="text-lg">✕</span>
