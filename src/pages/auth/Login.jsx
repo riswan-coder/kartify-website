@@ -39,9 +39,9 @@ export default function Login() {
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-14 h-14 bg-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-2xl font-bold">T</span>
+            <span className="text-white text-2xl font-bold">k</span>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">TrendKart</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Kartify</h1>
           <p className="text-gray-500 text-sm mt-1">Sign in to your account</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">

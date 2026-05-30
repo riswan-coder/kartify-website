@@ -10,27 +10,38 @@ const COLORS = [
 ];
 
 const CATEGORIES = [
-  { key: '', label: 'All', emoji: '🛍️' },
-  { key: 'men_clothes', label: 'Men Clothes', emoji: '👔', gender: 'men', product_type: 'clothes' },
-  { key: 'men_shoes', label: 'Men Shoes', emoji: '👞', gender: 'men', product_type: 'shoes' },
-  { key: 'women_clothes', label: 'Women Clothes', emoji: '👗', gender: 'women', product_type: 'clothes' },
-  { key: 'women_shoes', label: 'Women Shoes', emoji: '👠', gender: 'women', product_type: 'shoes' },
-  { key: 'kids_clothes', label: 'Kids Clothes', emoji: '🧒', gender: 'kids', product_type: 'clothes' },
-  { key: 'kids_shoes', label: 'Kids Shoes', emoji: '👟', gender: 'kids', product_type: 'shoes' },
+  { key: '', label: 'All' },
+  { key: 'men_clothes', label: 'Men Clothes' },
+  { key: 'men_shoes', label: 'Men Shoes' },
+  { key: 'women_clothes', label: 'Women Clothes' },
+  { key: 'women_shoes', label: 'Women Shoes' },
+  { key: 'kids_clothes', label: 'Kids Clothes' },
+  { key: 'kids_shoes', label: 'Kids Shoes' },
+];
+
+const GENDERS = [
+  { key: '', label: '🏠 All' },
+  { key: 'men', label: '👔 Men' },
+  { key: 'women', label: '👗 Women' },
+  { key: 'kids', label: '🧒 Kids' },
+];
+
+const TYPES = [
+  { key: 'clothes', label: '👕 Clothes' },
+  { key: 'shoes', label: '👟 Shoes' },
 ];
 
 export default function Home() {
   const [shops, setShops] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [allProducts, setAllProducts] = useState([]);
   const [bannerAds, setBannerAds] = useState([]);
   const [popupAd, setPopupAd] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [currentBanner, setCurrentBanner] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState('');
-  const [productSearch, setProductSearch] = useState('');
-  const [shopSearch, setShopSearch] = useState('');
+  const [activeGender, setActiveGender] = useState('');
+  const [activeType, setActiveType] = useState('');
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     Promise.all([
@@ -40,15 +51,16 @@ export default function Home() {
       getPopupAd(),
     ]).then(([shopsRes, productsRes, bannersRes, popupRes]) => {
       setShops(shopsRes.data);
-      setAllProducts(productsRes.data);
       setFeaturedProducts(productsRes.data.slice(0, 8));
-      if (bannersRes.data?.length > 0) {
+      if (Array.isArray(bannersRes.data) && bannersRes.data.length > 0) {
         setBannerAds(bannersRes.data);
       }
-      if (popupRes.data?.image_url) {
+      if (popupRes.data && popupRes.data.image_url) {
         setPopupAd(popupRes.data);
         setTimeout(() => setShowPopup(true), 1500);
       }
+    }).catch(err => {
+      console.log('Load error:', err);
     }).finally(() => setLoading(false));
   }, []);
 
@@ -62,295 +74,425 @@ export default function Home() {
     }
   }, [bannerAds]);
 
-  // ✅ Add this below
-  useEffect(() => {
-    if (allProducts.length > 0) {
-      console.log('category:', allProducts[0].category);
-    }
-  }, [allProducts]);
-
-
-  // Filter products by search + category
-  const filteredProducts = allProducts.filter(p => {
+  const filteredShops = shops.filter(s => {
     const matchSearch =
-      p.name.toLowerCase().includes(productSearch.toLowerCase()) ||
-      p.shop_name?.toLowerCase().includes(productSearch.toLowerCase());
-
-    const matchCat = activeCategory === '' || (() => {
-      const cat = CATEGORIES.find(c => c.key === activeCategory);
-      return cat
-        ? p.category?.gender === cat.gender && p.category?.product_type === cat.product_type
-        : true;
-    })();
-
+      s.name.toLowerCase().includes(search.toLowerCase()) ||
+      s.city.toLowerCase().includes(search.toLowerCase());
+    let matchCat = true;
+    if (activeGender && activeType) {
+      matchCat = s.category === `${activeGender}_${activeType}`;
+    } else if (activeGender) {
+      matchCat =
+        s.category === `${activeGender}_clothes` ||
+        s.category === `${activeGender}_shoes`;
+    }
     return matchSearch && matchCat;
   });
 
-  // Filter shops by shop search only
-  const filteredShops = shops.filter(s =>
-    s.name.toLowerCase().includes(shopSearch.toLowerCase()) ||
-    s.city.toLowerCase().includes(shopSearch.toLowerCase())
-  );
-
-  const showingSearchResults = productSearch !== '' || activeCategory !== '';
-
   return (
-    <div>
+    <div style={{ fontFamily: 'sans-serif' }}>
+
       {/* Popup Ad Modal */}
       {showPopup && popupAd && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl overflow-hidden shadow-2xl w-full max-w-sm relative">
+        <div style={{
+          position: 'fixed', inset: 0,
+          background: 'rgba(0,0,0,0.65)',
+          display: 'flex', alignItems: 'center',
+          justifyContent: 'center', zIndex: 1000, padding: 16
+        }}>
+          <div style={{
+            background: '#fff', borderRadius: 20,
+            overflow: 'hidden', width: '100%', maxWidth: 360,
+            position: 'relative'
+          }}>
             <button
               onClick={() => setShowPopup(false)}
-              className="absolute top-3 right-3 z-10 w-8 h-8 bg-black bg-opacity-50 text-white rounded-full flex items-center justify-center text-sm hover:bg-opacity-70 transition-colors"
-            >
-              ✕
-            </button>
+              style={{
+                position: 'absolute', top: 10, right: 10,
+                width: 30, height: 30, borderRadius: '50%',
+                background: 'rgba(0,0,0,0.5)', color: '#fff',
+                border: 'none', cursor: 'pointer', fontSize: 14,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                zIndex: 10
+              }}
+            >✕</button>
             <Link to={`/shop/${popupAd.shop?.id}`} onClick={() => setShowPopup(false)}>
               <img
                 src={popupAd.image_url}
-                alt="Advertisement"
-                className="w-full object-cover max-h-80"
+                alt="Ad"
+                style={{ width: '100%', maxHeight: 300, objectFit: 'cover', display: 'block' }}
               />
             </Link>
-            <div className="p-4 flex items-center justify-between">
+            <div style={{
+              padding: '12px 16px',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+            }}>
               <div>
-                <p className="font-semibold text-gray-900">{popupAd.shop?.name}</p>
-                <p className="text-gray-400 text-sm">{popupAd.shop?.city}</p>
+                <p style={{ fontWeight: 600, fontSize: 14, margin: 0 }}>{popupAd.shop?.name}</p>
+                <p style={{ color: '#9ca3af', fontSize: 12, margin: 0 }}>{popupAd.shop?.city}</p>
               </div>
               <Link
                 to={`/shop/${popupAd.shop?.id}`}
                 onClick={() => setShowPopup(false)}
-                className="bg-primary-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-primary-700 transition-colors"
+                style={{
+                  background: '#4f46e5', color: '#fff',
+                  padding: '8px 16px', borderRadius: 20,
+                  textDecoration: 'none', fontSize: 13, fontWeight: 500
+                }}
               >
-                Visit Shop
+                Visit
               </Link>
             </div>
           </div>
         </div>
       )}
 
-      {/* Hero section — searches PRODUCTS */}
-      <div className="bg-gradient-to-br from-primary-400 to-primary-700 text-white py-10 px-2">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="max-w-3xl mx-auto">
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={productSearch}
-              onChange={e => setProductSearch(e.target.value)}
-              className="w-full px-5 py-4 rounded-xl text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-white shadow-md"
-            />
-          </div>
+      {/* Hero — purple header like app */}
+      <div style={{
+        background: 'linear-gradient(135deg, #4f46e5, #4338ca)',
+        padding: '48px 16px 20px'
+      }}>
+        {/* Search products button */}
+        <Link
+          to="/products"
+          style={{
+            display: 'flex', alignItems: 'center', gap: 10,
+            background: 'rgba(255,255,255,0.15)',
+            borderRadius: 12, padding: '12px 16px',
+            textDecoration: 'none', marginBottom: 12,
+          }}
+        >
+          <span style={{ fontSize: 16 }}>🔍</span>
+          <span style={{ color: '#fff', fontSize: 14, fontWeight: 500, flex: 1 }}>
+            Search products...
+          </span>
+          <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 20 }}>›</span>
+        </Link>
+
+        {/* Search shops */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 8,
+          background: 'rgba(255,255,255,0.15)',
+          borderRadius: 12, padding: '10px 16px',
+        }}>
+          <span style={{ fontSize: 14 }}>🏪</span>
+          <input
+            type="text"
+            placeholder="Search shops..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{
+              flex: 1, background: 'transparent', border: 'none',
+              outline: 'none', color: '#fff', fontSize: 14,
+            }}
+          />
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-10">
+      {/* Banner Ads */}
+      {bannerAds.length > 0 && (
+        <div style={{ position: 'relative', margin: '12px 14px 0' }}>
+          <div style={{
+            borderRadius: 16, overflow: 'hidden',
+            height: 160, position: 'relative', background: '#4f46e5'
+          }}>
+            {bannerAds.map((ad, index) => (
+              <Link
+                key={ad.id}
+                to={`/shop/${ad.shop?.id}`}
+                style={{
+                  position: 'absolute', inset: 0,
+                  opacity: currentBanner === index ? 1 : 0,
+                  transition: 'opacity 0.7s ease',
+                  display: 'block',
+                }}
+              >
+                {ad.image_url ? (
+                  <img
+                    src={ad.image_url}
+                    alt={ad.shop?.name}
+                    style={{
+                      width: '100%', height: '100%',
+                      objectFit: 'cover', display: 'block'
+                    }}
+                  />
+                ) : (
+                  <div style={{
+                    width: '100%', height: '100%',
+                    background: '#4f46e5',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center'
+                  }}>
+                    <p style={{ color: '#fff', fontWeight: 600 }}>{ad.shop?.name}</p>
+                  </div>
+                )}
+                <div style={{
+                  position: 'absolute', bottom: 0, left: 0, right: 0,
+                  padding: '20px 14px 10px',
+                  background: 'linear-gradient(transparent, rgba(0,0,0,0.6))'
+                }}>
+                  <p style={{ color: '#fff', fontWeight: 700, fontSize: 14, margin: 0 }}>
+                    {ad.shop?.name}
+                  </p>
+                  <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 12, margin: 0 }}>
+                    {ad.shop?.city}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
 
-        {/* Category filter */}
-        <div className="flex gap-3 flex-wrap mb-8 justify-center">
-          {CATEGORIES.map(cat => (
+          {/* Dots */}
+          {bannerAds.length > 1 && (
+            <div style={{
+              display: 'flex', justifyContent: 'center',
+              gap: 6, marginTop: 8
+            }}>
+              {bannerAds.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentBanner(i)}
+                  style={{
+                    width: currentBanner === i ? 20 : 6,
+                    height: 6, borderRadius: 3,
+                    background: currentBanner === i ? '#4f46e5' : '#d1d5db',
+                    border: 'none', cursor: 'pointer',
+                    transition: 'all 0.3s ease', padding: 0
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Gender filter — single row like app */}
+      <div style={{
+        display: 'flex', gap: 8,
+        padding: '12px 14px 4px',
+        overflowX: 'auto',
+        scrollbarWidth: 'none',
+        WebkitOverflowScrolling: 'touch',
+      }}>
+        {GENDERS.map(g => (
+          <button
+            key={g.key}
+            onClick={() => {
+              setActiveGender(g.key);
+              setActiveType('');
+            }}
+            style={{
+              flexShrink: 0,
+              padding: '8px 16px',
+              borderRadius: 20,
+              border: activeGender === g.key ? 'none' : '1px solid #e5e7eb',
+              background: activeGender === g.key ? '#4f46e5' : '#fff',
+              color: activeGender === g.key ? '#fff' : '#6b7280',
+              fontSize: 13, fontWeight: 500, cursor: 'pointer',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {g.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Type sub-filter */}
+      {activeGender !== '' && (
+        <div style={{
+          display: 'flex', gap: 10,
+          padding: '8px 14px',
+        }}>
+          {TYPES.map(t => (
             <button
-              key={cat.key}
-              onClick={() => setActiveCategory(cat.key)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 shadow-sm ${
-                activeCategory === cat.key
-                  ? 'bg-primary-600 text-white shadow-md scale-105'
-                  : 'bg-white border border-gray-200 text-gray-500 hover:border-primary-400 hover:text-primary-600 hover:shadow-md'
-              }`}
+              key={t.key}
+              onClick={() => setActiveType(prev => prev === t.key ? '' : t.key)}
+              style={{
+                flex: 1, padding: '9px 0',
+                borderRadius: 10,
+                border: activeType === t.key ? '2px solid #4f46e5' : '1px solid #e5e7eb',
+                background: activeType === t.key ? '#eef2ff' : '#fff',
+                color: activeType === t.key ? '#4f46e5' : '#6b7280',
+                fontSize: 13, fontWeight: 500, cursor: 'pointer',
+              }}
             >
-              <span className="text-base">{cat.emoji}</span>
-              <span>{cat.label}</span>
+              {t.label}
             </button>
           ))}
         </div>
+      )}
 
-        {/* Show product search results when searching */}
-        {showingSearchResults ? (
-          <div className="mb-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Products</h2>
-              <span className="text-gray-500 text-sm">{filteredProducts.length} results</span>
-            </div>
-            {filteredProducts.length === 0 ? (
-              <div className="text-center py-12 text-gray-400">
-                <p className="text-4xl mb-3">🔍</p>
-                <p>No products found</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {filteredProducts.map(product => (
-                  <Link
-                    key={product.id}
-                    to={`/product/${product.id}`}
-                    className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
-                  >
-                    <div className="h-40 bg-primary-50 flex items-center justify-center overflow-hidden">
-                      {product.images?.[0]?.image ? (
-                        <img
-                          src={product.images[0].image}
-                          alt={product.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <span className="text-5xl">
-                          {product.category?.product_type === 'shoes' ? '👟' : '👕'}
-                        </span>
-                      )}
-                    </div>
-                    <div className="p-3">
-                      <p className="font-semibold text-gray-900 text-sm truncate">{product.name}</p>
-                      <p className="text-gray-400 text-xs mt-0.5">{product.shop_name}</p>
-                      <p className="text-primary-600 font-bold mt-1">₹{product.price}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
+      <div style={{ padding: '8px 14px 0' }}>
+
+        {/* Local shops header */}
+        <div style={{
+          display: 'flex', justifyContent: 'space-between',
+          alignItems: 'center', marginBottom: 10
+        }}>
+          <p style={{ fontSize: 16, fontWeight: 700, color: '#111827', margin: 0 }}>
+            Local shops
+          </p>
+          <p style={{ fontSize: 12, color: '#9ca3af', margin: 0 }}>
+            {filteredShops.length} shops
+          </p>
+        </div>
+
+        {/* Shops grid — 3 per row like app */}
+        {loading ? (
+          <div style={{
+            display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8
+          }}>
+            {[...Array(6)].map((_, i) => (
+              <div key={i} style={{
+                height: 110, borderRadius: 12,
+                background: '#f1f5f9',
+                animation: 'pulse 1.5s infinite'
+              }} />
+            ))}
+          </div>
+        ) : filteredShops.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '40px 0', color: '#9ca3af' }}>
+            <p style={{ fontSize: 40 }}>🏪</p>
+            <p style={{ fontSize: 14 }}>No shops found</p>
           </div>
         ) : (
-          <>
-            {/* Banner Ads */}
-            {bannerAds.length > 0 && (
-              <div className="mb-10">
-                <div className="relative rounded-2xl overflow-hidden h-30 md:h-80">
-                  {bannerAds.map((ad, index) => (
-                    <Link
-                      key={ad.id}
-                      to={`/shop/${ad.shop?.id}`}
-                      className={`absolute inset-0 transition-opacity duration-700 ${
-                        currentBanner === index ? 'opacity-100' : 'opacity-0'
-                      }`}
-                    >
-                      {ad.image_url ? (
-                        <img
-                          src={ad.image_url}
-                          alt={ad.shop?.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-primary-600 flex items-center justify-center">
-                          <p className="text-white text-xl font-bold">{ad.shop?.name}</p>
-                        </div>
-                      )}
-                      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
-                        <p className="text-white font-bold">{ad.shop?.name}</p>
-                        <p className="text-gray-300 text-sm">{ad.shop?.city}</p>
-                      </div>
-                    </Link>
-                  ))}
-                  {bannerAds.length > 1 && (
-                    <div className="absolute bottom-3 right-4 flex gap-1">
-                      {bannerAds.map((_, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setCurrentBanner(i)}
-                          className={`w-2 h-2 rounded-full transition-colors ${
-                            currentBanner === i ? 'bg-white' : 'bg-white bg-opacity-40'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  )}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: 8,
+            marginBottom: 20,
+          }}>
+            {filteredShops.map((shop, index) => (
+              <Link
+                key={shop.id}
+                to={`/shop/${shop.id}`}
+                style={{ textDecoration: 'none' }}
+              >
+                <div style={{
+                  background: '#fff',
+                  borderRadius: 12,
+                  overflow: 'hidden',
+                  border: '1px solid #f1f5f9',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                }}>
+                  <div style={{
+                    height: 64,
+                    background: COLORS[index % COLORS.length],
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    overflow: 'hidden',
+                  }}>
+                    {shop.logo_url ? (
+                      <img
+                        src={shop.logo_url}
+                        alt={shop.name}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <span style={{
+                        color: '#fff', fontSize: 24, fontWeight: 700
+                      }}>
+                        {shop.name[0].toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ padding: 8 }}>
+                    <p style={{
+                      fontSize: 11, fontWeight: 600, color: '#111827',
+                      margin: 0, overflow: 'hidden',
+                      textOverflow: 'ellipsis', whiteSpace: 'nowrap'
+                    }}>
+                      {shop.name}
+                    </p>
+                    <p style={{
+                      fontSize: 10, color: '#9ca3af', margin: '2px 0 0',
+                      overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
+                    }}>
+                      {shop.city}
+                    </p>
+                    <p style={{
+                      fontSize: 10, color: '#4f46e5', margin: '2px 0 0', fontWeight: 500
+                    }}>
+                      {shop.product_count} items
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
-
-            {/* Shops grid */}
-            <div className="mb-12">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Local Shops</h2>
-                <span className="text-gray-500 text-sm">{filteredShops.length} shops</span>
-              </div>
-
-              {/* Shop search */}
-              <div className="max-w-2xl mx-auto mb-6">
-                <input
-                  type="text"
-                  placeholder="Search shops or cities..."
-                  value={shopSearch}
-                  onChange={e => setShopSearch(e.target.value)}
-                  className="w-full px-5 py-4 rounded-xl border border-gray-200 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 shadow-sm"
-                />
-              </div>
-
-              {loading ? (
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                  {[...Array(6)].map((_, i) => (
-                    <div key={i} className="bg-gray-100 rounded-xl h-40 animate-pulse" />
-                  ))}
-                </div>
-              ) : filteredShops.length === 0 ? (
-                <div className="text-center py-12 text-gray-400">
-                  <p className="text-4xl mb-3">🏪</p>
-                  <p>No shops found</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                  {filteredShops.map((shop, index) => (
-                    <Link
-                      key={shop.id}
-                      to={`/shop/${shop.id}`}
-                      className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
-                    >
-                      <div
-                        className="h-20 flex items-center justify-center overflow-hidden"
-                        style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                      >
-                        {shop.logo_url ? (
-                          <img src={shop.logo_url} alt={shop.name} className="w-full h-full object-cover" />
-                        ) : (
-                          <span className="text-white text-2xl font-bold">
-                            {shop.name[0].toUpperCase()}
-                          </span>
-                        )}
-                      </div>
-                      <div className="p-3">
-                        <p className="font-semibold text-gray-900 text-sm truncate">{shop.name}</p>
-                        <p className="text-gray-400 text-xs mt-0.5">{shop.city}</p>
-                        <p className="text-primary-600 text-xs mt-1 font-medium">{shop.product_count} items</p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Featured products */}
-            <div>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Featured Products</h2>
-                <Link to="/products" className="text-primary-600 text-sm font-medium hover:underline">
-                  View all →
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {featuredProducts.map(product => (
-                  <Link
-                    key={product.id}
-                    to={`/product/${product.id}`}
-                    className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
-                  >
-                    <div className="h-40 bg-primary-50 flex items-center justify-center overflow-hidden">
-                      {product.images?.[0]?.image ? (
-                        <img src={product.images[0].image} alt={product.name} className="w-full h-full object-cover" />
-                      ) : (
-                        <span className="text-5xl">
-                          {product.category?.product_type === 'shoes' ? '👟' : '👕'}
-                        </span>
-                      )}
-                    </div>
-                    <div className="p-3">
-                      <p className="font-semibold text-gray-900 text-sm truncate">{product.name}</p>
-                      <p className="text-gray-400 text-xs mt-0.5">{product.shop_name}</p>
-                      <p className="text-primary-600 font-bold mt-1">₹{product.price}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </>
+              </Link>
+            ))}
+          </div>
         )}
+
+        {/* Featured products */}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{
+            display: 'flex', justifyContent: 'space-between',
+            alignItems: 'center', marginBottom: 12
+          }}>
+            <p style={{ fontSize: 16, fontWeight: 700, color: '#111827', margin: 0 }}>
+              Featured Products
+            </p>
+            <Link to="/products" style={{
+              color: '#4f46e5', fontSize: 13, fontWeight: 500, textDecoration: 'none'
+            }}>
+              View all →
+            </Link>
+          </div>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: 10,
+          }}>
+            {featuredProducts.map(product => (
+              <Link
+                key={product.id}
+                to={`/product/${product.id}`}
+                style={{ textDecoration: 'none' }}
+              >
+                <div style={{
+                  background: '#fff', borderRadius: 12,
+                  overflow: 'hidden', border: '1px solid #f1f5f9',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                }}>
+                  <div style={{
+                    height: 130, background: '#eef2ff',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    overflow: 'hidden',
+                  }}>
+                    {product.images?.[0]?.image ? (
+                      <img
+                        src={product.images[0].image}
+                        alt={product.name}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <span style={{ fontSize: 48 }}>
+                        {product.category?.product_type === 'shoes' ? '👟' : '👕'}
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ padding: 10 }}>
+                    <p style={{
+                      fontSize: 13, fontWeight: 600, color: '#111827',
+                      margin: 0, overflow: 'hidden',
+                      textOverflow: 'ellipsis', whiteSpace: 'nowrap'
+                    }}>
+                      {product.name}
+                    </p>
+                    <p style={{
+                      fontSize: 11, color: '#9ca3af', margin: '2px 0'
+                    }}>
+                      {product.shop_name}
+                    </p>
+                    <p style={{
+                      fontSize: 15, fontWeight: 700, color: '#4f46e5', margin: 0
+                    }}>
+                      ₹{product.price}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
 
       </div>
     </div>

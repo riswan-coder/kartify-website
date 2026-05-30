@@ -7,66 +7,131 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-primary-600 text-white shadow-lg sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <nav style={{
+      background: '#4f46e5', position: 'sticky', top: 0, zIndex: 100,
+      boxShadow: '0 2px 8px rgba(79,70,229,0.3)'
+    }}>
+      <div style={{
+        maxWidth: 1200, margin: '0 auto',
+        padding: '12px 16px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+      }}>
 
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center">
-            <span className="text-primary-600 font-bold text-lg">k</span>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
+          <div style={{
+            width: 34, height: 34, background: '#fff',
+            borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center'
+          }}>
+            <span style={{ color: '#4f46e5', fontWeight: 800, fontSize: 18 }}>T</span>
           </div>
-          <span className="text-xl font-bold tracking-wide">kartify</span>
+          <span style={{ color: '#fff', fontWeight: 700, fontSize: 18, letterSpacing: 0.5 }}>
+            TrendKart
+          </span>
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-6">
-          <Link to="/" className="text-sm hover:text-primary-100 transition-colors">Home</Link>
-          <Link to="/products" className="text-sm hover:text-primary-100 transition-colors">Products</Link>
+        {/* Desktop links */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }} className="desktop-nav">
+          <Link to="/" style={{ color: '#c7d2fe', fontSize: 14, textDecoration: 'none' }}>Home</Link>
+          <Link to="/products" style={{ color: '#c7d2fe', fontSize: 14, textDecoration: 'none' }}>Products</Link>
           {user ? (
             <>
-              <Link to="/orders" className="text-sm hover:text-primary-100 transition-colors">My Orders</Link>
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-primary-100">Hi, {user.username}</span>
-                <button
-                  onClick={logoutUser}
-                  className="text-sm bg-white text-primary-600 px-3 py-1.5 rounded-lg font-medium hover:bg-primary-50 transition-colors"
-                >
-                  Logout
-                </button>
-              </div>
+              <Link to="/orders" style={{ color: '#c7d2fe', fontSize: 14, textDecoration: 'none' }}>My Orders</Link>
+              <span style={{ color: '#c7d2fe', fontSize: 13 }}>Hi, {user.username}</span>
+              <button
+                onClick={logoutUser}
+                style={{
+                  background: '#fff', color: '#4f46e5',
+                  border: 'none', borderRadius: 8,
+                  padding: '6px 14px', fontSize: 13,
+                  fontWeight: 500, cursor: 'pointer'
+                }}
+              >Logout</button>
             </>
           ) : (
-            <div className="flex items-center gap-3">
-              <Link to="/login" className="text-sm hover:text-primary-100 transition-colors">Login</Link>
-              <Link to="/register" className="text-sm bg-white text-primary-600 px-3 py-1.5 rounded-lg font-medium hover:bg-primary-50 transition-colors">Register</Link>
-            </div>
+            <>
+              <Link to="/login" style={{ color: '#c7d2fe', fontSize: 14, textDecoration: 'none' }}>Login</Link>
+              <Link to="/register" style={{
+                background: '#fff', color: '#4f46e5',
+                padding: '6px 14px', borderRadius: 8,
+                fontSize: 13, fontWeight: 500, textDecoration: 'none'
+              }}>Register</Link>
+            </>
           )}
         </div>
 
         {/* Mobile menu button */}
-        <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
-          <span className="text-2xl">{menuOpen ? '✕' : '☰'}</span>
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          style={{
+            background: 'rgba(255,255,255,0.15)', border: 'none',
+            color: '#fff', borderRadius: 8, padding: '6px 10px',
+            fontSize: 18, cursor: 'pointer',
+            display: 'none'
+          }}
+          className="mobile-menu-btn"
+        >
+          {menuOpen ? '✕' : '☰'}
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile dropdown */}
       {menuOpen && (
-        <div className="md:hidden bg-primary-700 px-4 py-3 space-y-2">
-          <Link to="/" className="block text-sm py-2" onClick={() => setMenuOpen(false)}>Home</Link>
-          <Link to="/products" className="block text-sm py-2" onClick={() => setMenuOpen(false)}>Products</Link>
+        <div style={{
+          background: '#4338ca',
+          padding: '8px 16px 16px',
+          display: 'flex', flexDirection: 'column', gap: 4
+        }}>
+          <Link to="/" onClick={() => setMenuOpen(false)} style={{
+            color: '#fff', padding: '10px 0',
+            borderBottom: '1px solid rgba(255,255,255,0.1)',
+            textDecoration: 'none', fontSize: 14
+          }}>🏠 Home</Link>
+          <Link to="/products" onClick={() => setMenuOpen(false)} style={{
+            color: '#fff', padding: '10px 0',
+            borderBottom: '1px solid rgba(255,255,255,0.1)',
+            textDecoration: 'none', fontSize: 14
+          }}>🔍 Products</Link>
           {user ? (
             <>
-              <Link to="/orders" className="block text-sm py-2" onClick={() => setMenuOpen(false)}>My Orders</Link>
-              <button onClick={logoutUser} className="block text-sm py-2 text-red-300">Logout</button>
+              <Link to="/orders" onClick={() => setMenuOpen(false)} style={{
+                color: '#fff', padding: '10px 0',
+                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                textDecoration: 'none', fontSize: 14
+              }}>📦 My Orders</Link>
+              <button onClick={logoutUser} style={{
+                background: 'rgba(255,255,255,0.15)', color: '#fff',
+                border: 'none', borderRadius: 8, padding: '10px',
+                fontSize: 14, cursor: 'pointer', marginTop: 4,
+                textAlign: 'left'
+              }}>🚪 Logout ({user.username})</button>
             </>
           ) : (
             <>
-              <Link to="/login" className="block text-sm py-2" onClick={() => setMenuOpen(false)}>Login</Link>
-              <Link to="/register" className="block text-sm py-2" onClick={() => setMenuOpen(false)}>Register</Link>
+              <Link to="/login" onClick={() => setMenuOpen(false)} style={{
+                color: '#fff', padding: '10px 0',
+                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                textDecoration: 'none', fontSize: 14
+              }}>🔑 Login</Link>
+              <Link to="/register" onClick={() => setMenuOpen(false)} style={{
+                background: '#fff', color: '#4f46e5',
+                padding: '10px', borderRadius: 8,
+                textDecoration: 'none', fontSize: 14,
+                fontWeight: 600, textAlign: 'center',
+                marginTop: 4, display: 'block'
+              }}>Register</Link>
             </>
           )}
         </div>
       )}
+
+      {/* CSS for responsive */}
+      <style>{`
+        @media (max-width: 768px) {
+          .desktop-nav { display: none !important; }
+          .mobile-menu-btn { display: block !important; }
+        }
+      `}</style>
     </nav>
   );
 }
