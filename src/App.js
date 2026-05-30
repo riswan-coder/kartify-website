@@ -10,6 +10,7 @@ import PlaceOrder from './pages/PlaceOrder';
 import MyOrders from './pages/MyOrders';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
+import Category from './pages/Category';
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/orders" element={<MyOrders />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/category/:gender" element={<Category />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
