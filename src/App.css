@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+@media (min-width: 768px) {
+  .home-shops-grid {
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 14px !important;
+  }
+
+  .home-products-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 14px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .home-shops-grid {
+    grid-template-columns: repeat(6, 1fr) !important;
+  }
+
+  .home-products-grid {
+    grid-template-columns: repeat(5, 1fr) !important;
+  }
+}

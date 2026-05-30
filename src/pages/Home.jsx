@@ -253,9 +253,9 @@ export default function Home() {
         padding: '14px 14px 6px',
       }}>
         {[
-          { key: 'men', label: '👔 Men', color: '#0891b2' },
-          { key: 'women', label: '👗 Women', color: '#dc2626' },
-          { key: 'kids', label: '🧒 Kids', color: '#059669' },
+          { key: 'men', label: '👔 Men', color: '#4f46e5' },
+          { key: 'women', label: '👗 Women', color: '#4f46e5' },
+          { key: 'kids', label: '🧒 Kids', color: '#4f46e5' },
         ].map(g => (
           <button
             key={g.key}
@@ -316,7 +316,7 @@ export default function Home() {
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
             gap: 8, marginBottom: 20
-          }}>
+          }} className="home-shops-grid">
             {filteredShops.map((shop, index) => (
               <Link
                 key={shop.id}
@@ -398,7 +398,7 @@ export default function Home() {
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
             gap: 10
-          }}>
+          }} className="home-products-grid">
             {featuredProducts.map(product => (
               <Link
                 key={product.id}
