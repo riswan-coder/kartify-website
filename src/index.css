@@ -19,18 +19,25 @@ body {
     gap: 16px !important;
   }
 
-  /* Bigger shop cards on desktop */
   .home-shops-grid > a > div > div:first-child {
     height: 100px !important;
   }
 
-  /* Bigger product cards on desktop */
   .home-products-grid > a > div > div:first-child {
     height: 180px !important;
   }
 
-  /* Banner bigger on desktop */
   .home-banner {
     height: 280px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .home-shops-grid {
+    grid-template-columns: repeat(6, 1fr) !important;
+  }
+
+  .home-products-grid {
+    grid-template-columns: repeat(5, 1fr) !important;
   }
 }

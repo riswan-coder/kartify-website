@@ -318,7 +318,7 @@ export default function Home() {
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
             gap: 8, marginBottom: 20
-          }}>
+          }} className="home-shops-grid">
             {filteredShops.map((shop, index) => (
               <Link
                 key={shop.id}
@@ -400,7 +400,7 @@ export default function Home() {
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
             gap: 10
-          }}>
+          }} className="home-products-grid">
             {featuredProducts.map(product => (
               <Link
                 key={product.id}
