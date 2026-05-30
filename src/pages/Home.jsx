@@ -55,7 +55,7 @@ export default function Home() {
   );
 
   return (
-    <div>
+    <div style={{ maxWidth: 1200, margin: '0 auto' }}>
 
       {/* Popup Ad */}
       {showPopup && popupAd && (
@@ -124,7 +124,9 @@ export default function Home() {
       {/* Purple header */}
       <div style={{
         background: 'linear-gradient(135deg, #4f46e5, #4338ca)',
-        padding: '48px 16px 16px'
+        padding: '48px 16px 16px',
+        maxWidth: 1200,
+        margin: '0 auto'
       }}>
         {/* Search products */}
         <Link
@@ -171,7 +173,7 @@ export default function Home() {
             borderRadius: 16, overflow: 'hidden',
             height: 160, position: 'relative',
             background: '#4f46e5'
-          }}>
+          }} className="home-banner">
             {bannerAds.map((ad, index) => (
               <Link
                 key={ad.id}
@@ -316,7 +318,7 @@ export default function Home() {
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
             gap: 8, marginBottom: 20
-          }} className="home-shops-grid">
+          }}>
             {filteredShops.map((shop, index) => (
               <Link
                 key={shop.id}
@@ -398,7 +400,7 @@ export default function Home() {
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
             gap: 10
-          }} className="home-products-grid">
+          }}>
             {featuredProducts.map(product => (
               <Link
                 key={product.id}
