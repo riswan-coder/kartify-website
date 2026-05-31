@@ -152,7 +152,7 @@ export default function ShopDetail() {
                     <img
                       src={product.images[0].image}
                       alt={product.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain p-1"
                     />
                   ) : (
                     <span className="text-5xl">
