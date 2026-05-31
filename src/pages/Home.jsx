@@ -263,9 +263,9 @@ export default function Home() {
         padding: '14px 14px 6px',
       }}>
         {[
-          { key: 'men', label: '👔 Men', color: '#4f46e5' },
-          { key: 'women', label: '👗 Women', color: '#4f46e5' },
-          { key: 'kids', label: '🧒 Kids', color: '#4f46e5' },
+          { key: 'men', label: '👔 Men', color: 'rgb(5, 173, 137)' },
+          { key: 'women', label: '👗 Women', color: 'rgb(5, 173, 137)' },
+          { key: 'kids', label: '🧒 Kids', color: 'rgb(5, 173, 137)' },
         ].map(g => (
           <button
             key={g.key}
