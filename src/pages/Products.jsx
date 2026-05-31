@@ -172,29 +172,60 @@ export default function Products() {
             )}
           </div>
         ) : (
-          <div className="product-grid">
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: 10, marginBottom: 24
+          }}>
             {products.map(product => (
               <Link
                 key={product.id}
                 to={`/product/${product.id}`}
-                className="product-card"
+                style={{ textDecoration: 'none' }}
               >
-                <div className="product-card-img">
-                  {product.images?.[0]?.image ? (
-                    <img src={product.images[0].image} alt={product.name} />
-                  ) : (
-                    <span style={{ fontSize: 48 }}>
-                      {product.category?.product_type === 'shoes' ? '👟' : '👕'}
-                    </span>
-                  )}
-                </div>
-                <div className="product-card-body">
-                  <p className="product-card-name">{product.name}</p>
-                  <p className="product-card-shop">{product.shop_name}</p>
-                  {product.colors && (
-                    <p className="product-card-colors">{product.colors}</p>
-                  )}
-                  <p className="product-card-price">₹{product.price}</p>
+                <div style={{
+                  background: '#fff', borderRadius: 12,
+                  overflow: 'hidden', border: '1px solid #f1f5f9',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                }}>
+                  <div style={{
+                    height: 150, background: '#f8fafc',
+                    display: 'flex', alignItems: 'center',
+                    justifyContent: 'center', overflow: 'hidden'
+                  }}>
+                    {product.images?.[0]?.image ? (
+                      <img
+                        src={product.images[0].image}
+                        alt={product.name}
+                        style={{
+                          width: '100%', height: '100%',
+                          objectFit: 'contain', padding: 4
+                        }}
+                      />
+                    ) : (
+                      <span style={{ fontSize: 48 }}>
+                        {product.category?.product_type === 'shoes' ? '👟' : '👕'}
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ padding: 10 }}>
+                    <p style={{
+                      fontSize: 13, fontWeight: 600, color: '#111827',
+                      margin: 0, overflow: 'hidden',
+                      textOverflow: 'ellipsis', whiteSpace: 'nowrap'
+                    }}>{product.name}</p>
+                    <p style={{ fontSize: 11, color: '#9ca3af', margin: '2px 0' }}>
+                      {product.shop_name}
+                    </p>
+                    {product.colors && (
+                      <p style={{ fontSize: 11, color: '#6366f1', margin: '2px 0' }}>
+                        {product.colors}
+                      </p>
+                    )}
+                    <p style={{ fontSize: 15, fontWeight: 700, color: '#4f46e5', margin: 0 }}>
+                      ₹{product.price}
+                    </p>
+                  </div>
                 </div>
               </Link>
             ))}

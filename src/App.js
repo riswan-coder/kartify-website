@@ -18,26 +18,17 @@ export default function App() {
       <BrowserRouter>
         <Toaster position="top-right" />
         <Navbar />
-        {/* This wrapper centers content and limits width on laptop */}
-        <div style={{
-          maxWidth: 480,
-          margin: '0 auto',
-          minHeight: '100vh',
-          background: '#f8fafc',
-          boxShadow: '0 0 40px rgba(0,0,0,0.08)',
-        }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/shop/:id" element={<ShopDetail />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/order/:id" element={<PlaceOrder />} />
-            <Route path="/orders" element={<MyOrders />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/category/:gender" element={<Category />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/shop/:id" element={<ShopDetail />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/order/:id" element={<PlaceOrder />} />
+          <Route path="/orders" element={<MyOrders />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/category/:gender" element={<Category />} />
+        </Routes>
       </BrowserRouter>
     </AuthProvider>
   );

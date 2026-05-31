@@ -3,7 +3,10 @@ import { Link, useParams, useSearchParams, useNavigate } from 'react-router-dom'
 import { getShopDetail } from '../api/shops';
 import { getProducts } from '../api/products';
 
-
+const COLORS = [
+  '#4f46e5', '#0891b2', '#059669',
+  '#d97706', '#dc2626', '#7c3aed',
+];
 
 export default function ShopDetail() {
   const { id } = useParams();
@@ -177,30 +180,6 @@ export default function ShopDetail() {
           )}
         </div>
 
-        {/* Filter pills */}
-        <div style={{
-          display: 'flex', gap: 6, marginBottom: 12,
-          overflowX: 'auto', paddingBottom: 4,
-          scrollbarWidth: 'none'
-        }}>
-          {['all', 'men', 'women', 'kids', 'clothes', 'shoes'].map(f => (
-            <button
-              key={f}
-              onClick={() => setActiveFilter(f)}
-              style={{
-                flexShrink: 0, padding: '6px 14px',
-                borderRadius: 20, fontSize: 12, fontWeight: 500,
-                cursor: 'pointer', textTransform: 'capitalize',
-                border: activeFilter === f ? 'none' : '1px solid #e5e7eb',
-                background: activeFilter === f ? '#4f46e5' : '#fff',
-                color: activeFilter === f ? '#fff' : '#6b7280',
-              }}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
-
         <p style={{ fontSize: 12, color: '#9ca3af', marginBottom: 10 }}>
           {filtered.length} products
         </p>
@@ -214,7 +193,7 @@ export default function ShopDetail() {
         ) : (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
+            gridTemplateColumns: window.innerWidth >= 1024 ? 'repeat(6, 1fr)' : window.innerWidth >= 768 ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)',
             gap: 10, marginBottom: 24
           }}>
             {filtered.map(product => (
@@ -229,10 +208,10 @@ export default function ShopDetail() {
                   boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
                 }}>
                   <div style={{
-                    height: 150, background: '#f8fafc',
+                    height: window.innerWidth >= 768 ? 120 : 150, background: '#f8fafc',
                     display: 'flex', alignItems: 'center',
                     justifyContent: 'center', overflow: 'hidden'
-                  }}>
+                  }} className="shop-detail-img">
                     {product.images?.[0]?.image ? (
                       <img
                         src={product.images[0].image}
