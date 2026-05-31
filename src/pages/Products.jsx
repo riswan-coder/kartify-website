@@ -172,15 +172,11 @@ export default function Products() {
             )}
           </div>
         ) : (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: 10, marginBottom: 24
-          }}>
-            {products.map(product => (
+          <div className="product-grid" style={{ marginBottom: 24 }}>
+            {filtered.map(product => (
               <Link
                 key={product.id}
-                to={`/product/${product.id}`}
+                to={`/product/${product.id}${isDirect ? '?ref=direct&shop=' + id : ''}`}
                 style={{ textDecoration: 'none' }}
               >
                 <div style={{
@@ -188,20 +184,9 @@ export default function Products() {
                   overflow: 'hidden', border: '1px solid #f1f5f9',
                   boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
                 }}>
-                  <div style={{
-                    height: 150, background: '#f8fafc',
-                    display: 'flex', alignItems: 'center',
-                    justifyContent: 'center', overflow: 'hidden'
-                  }}>
+                  <div className="product-card-img">
                     {product.images?.[0]?.image ? (
-                      <img
-                        src={product.images[0].image}
-                        alt={product.name}
-                        style={{
-                          width: '100%', height: '100%',
-                          objectFit: 'contain', padding: 4
-                        }}
-                      />
+                      <img src={product.images[0].image} alt={product.name} />
                     ) : (
                       <span style={{ fontSize: 48 }}>
                         {product.category?.product_type === 'shoes' ? '👟' : '👕'}
@@ -214,11 +199,8 @@ export default function Products() {
                       margin: 0, overflow: 'hidden',
                       textOverflow: 'ellipsis', whiteSpace: 'nowrap'
                     }}>{product.name}</p>
-                    <p style={{ fontSize: 11, color: '#9ca3af', margin: '2px 0' }}>
-                      {product.shop_name}
-                    </p>
                     {product.colors && (
-                      <p style={{ fontSize: 11, color: '#6366f1', margin: '2px 0' }}>
+                      <p style={{ fontSize: 11, color: '#9ca3af', margin: '2px 0' }}>
                         {product.colors}
                       </p>
                     )}
