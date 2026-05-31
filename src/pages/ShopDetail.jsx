@@ -129,21 +129,6 @@ export default function ShopDetail() {
             onChange={e => setSearch(e.target.value)}
             className="flex-1 px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
-          <div className="flex gap-2 flex-wrap">
-            {['all', 'men', 'women', 'kids', 'clothes', 'shoes'].map(f => (
-              <button
-                key={f}
-                onClick={() => setActiveFilter(f)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium capitalize transition-colors ${
-                  activeFilter === f
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
         </div>
 
         <p className="text-sm text-gray-500 mb-4">{filtered.length} products</p>

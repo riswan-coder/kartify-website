@@ -34,7 +34,15 @@ export default function Home() {
       }
       if (popupRes.data && popupRes.data.image_url) {
         setPopupAd(popupRes.data);
-        setTimeout(() => setShowPopup(true), 1500);
+
+        // Only show popup ONCE per session
+        const adShown = sessionStorage.getItem('adShown');
+        if (!adShown) {
+          setTimeout(() => {
+            setShowPopup(true);
+            sessionStorage.setItem('adShown', 'true');
+          }, 1500);
+        }
       }
     }).finally(() => setLoading(false));
   }, []);
@@ -422,7 +430,7 @@ export default function Home() {
                         src={product.images[0].image}
                         alt={product.name}
                         style={{
-                          width: '100%', height: '100%', objectFit: 'cover'
+                          width: '100%', height: '100%', objectFit: 'contain'
                         }}
                       />
                     ) : (

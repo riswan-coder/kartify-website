@@ -102,7 +102,7 @@ export default function Products() {
                   <img
                     src={product.images[0].image}
                     alt={product.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 ) : (
                   <span className="text-5xl">

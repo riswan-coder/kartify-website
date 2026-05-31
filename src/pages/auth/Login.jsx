@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { loginApi, getProfile } from '../../api/auth';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -9,6 +9,10 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { loginUser } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the page user was trying to visit before login
+  const from = location.state?.from || '/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +30,8 @@ export default function Login() {
       }
       loginUser(userData, access, refresh);
       toast.success(`Welcome back, ${userData.username}!`);
-      navigate('/');
+      // Go back to where they came from
+      navigate(from, { replace: true });
     } catch {
       toast.error('Invalid username or password');
     } finally {
@@ -39,10 +44,10 @@ export default function Login() {
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-14 h-14 bg-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-2xl font-bold">k</span>
+            <span className="text-white text-2xl font-bold">T</span>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Kartify</h1>
-          <p className="text-gray-500 text-sm mt-1">Sign in to your account</p>
+          <h1 className="text-2xl font-bold text-gray-900">TrendKart</h1>
+          <p className="text-gray-500 text-sm mt-1">Sign in to continue</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -77,7 +82,7 @@ export default function Login() {
         </form>
         <p className="text-center text-sm text-gray-500 mt-6">
           Don't have an account?{' '}
-          <Link to="/register" className="text-primary-600 font-medium hover:underline">
+          <Link to="/register" state={{ from }} className="text-primary-600 font-medium hover:underline">
             Register
           </Link>
         </p>
