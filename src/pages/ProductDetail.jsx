@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { getProductDetail } from '../api/products';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -9,9 +9,9 @@ export default function ProductDetail() {
   const [searchParams] = useSearchParams();
   const isDirect = searchParams.get('ref') === 'direct';
   const shopId = searchParams.get('shop');
-
   const navigate = useNavigate();
   const { user } = useAuth();
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -27,20 +27,15 @@ export default function ProductDetail() {
   const handleOrder = () => {
     if (!user) {
       toast.error('Please login to place an order');
-      navigate(`/login${isDirect ? '?ref=direct&shop=' + shopId : ''}`);
+      sessionStorage.setItem('pendingOrder', JSON.stringify({
+        product, selectedSize, selectedColor
+      }));
+      navigate('/login', {
+        state: { from: `/order/${id}` }
+      });
       return;
     }
-    // Before navigating to place order, validate size
-    if (!selectedSize) {
-      toast.error('Please select a size before ordering');
-      return;
-    }
-    // Before navigating to place order, validate size
-    if (!selectedColor) {
-      toast.error('Please select a color before ordering');
-      return;
-    }
-    navigate(`/order/${product.id}${isDirect ? '?ref=direct&shop=' + shopId : ''}`, {
+    navigate(`/order/${id}`, {
       state: { product, selectedSize, selectedColor }
     });
   };
@@ -55,8 +50,16 @@ export default function ProductDetail() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-64">
-        <div className="animate-spin w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full" />
+      <div style={{
+        display: 'flex', alignItems: 'center',
+        justifyContent: 'center', minHeight: 300
+      }}>
+        <div style={{
+          width: 36, height: 36, border: '3px solid #4f46e5',
+          borderTopColor: 'transparent', borderRadius: '50%',
+          animation: 'spin 0.8s linear infinite'
+        }} />
+        <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
       </div>
     );
   }
@@ -66,127 +69,228 @@ export default function ProductDetail() {
   const images = product?.images?.filter(img => img.image) || [];
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
-      <button
-        onClick={handleBack}
-        className="text-primary-600 text-sm mb-6 hover:underline flex items-center gap-1"
-      >
-        ← {isDirect ? `Back to ${product?.shop_name}` : 'Back'}
-      </button>
+    <div style={{ paddingBottom: 100 }}>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {/* Back button */}
+      <div style={{ padding: '16px 16px 0' }}>
+        <button
+          onClick={handleBack}
+          style={{
+            background: '#eef2ff', border: 'none',
+            color: '#4f46e5', padding: '8px 16px',
+            borderRadius: 20, fontSize: 13,
+            fontWeight: 500, cursor: 'pointer'
+          }}
+        >
+          ← {isDirect ? `Back to ${product?.shop_name}` : 'Back'}
+        </button>
+      </div>
 
-        {/* Images */}
-        <div>
-          <div className="bg-primary-50 rounded-2xl overflow-hidden h-80 flex items-center justify-center">
-            {images[selectedImage]?.image ? (
+      {/* Main image */}
+      <div style={{
+        height: 300, background: '#f8fafc', margin: '12px 0',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        overflow: 'hidden'
+      }}>
+        {images[selectedImage]?.image ? (
+          <img
+            src={images[selectedImage].image}
+            alt={product.name}
+            style={{
+              width: '100%', height: '100%',
+              objectFit: 'contain', padding: 8
+            }}
+          />
+        ) : (
+          <span style={{ fontSize: 80 }}>
+            {product?.category?.product_type === 'shoes' ? '👟' : '👕'}
+          </span>
+        )}
+      </div>
+
+      {/* Thumbnails */}
+      {images.length > 1 && (
+        <div style={{
+          display: 'flex', gap: 8,
+          padding: '0 16px 12px',
+          overflowX: 'auto', scrollbarWidth: 'none'
+        }}>
+          {images.map((img, i) => (
+            <button
+              key={i}
+              onClick={() => setSelectedImage(i)}
+              style={{
+                flexShrink: 0, width: 64, height: 64,
+                borderRadius: 10, overflow: 'hidden',
+                border: selectedImage === i
+                  ? '2px solid #4f46e5'
+                  : '2px solid #e5e7eb',
+                padding: 0, cursor: 'pointer', background: '#f8fafc'
+              }}
+            >
               <img
-                src={images[selectedImage].image}
-                alt={product.name}
-                className="w-full h-full object-cover"
+                src={img.image}
+                alt=""
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
               />
-            ) : (
-              <span className="text-8xl">
-                {product?.category?.product_type === 'shoes' ? '👟' : '👕'}
-              </span>
-            )}
-          </div>
-          {images.length > 1 && (
-            <div className="flex gap-2 mt-3">
-              {images.map((img, i) => (
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div style={{ padding: '0 16px' }}>
+
+        {/* Shop and name */}
+        <p style={{ fontSize: 12, color: '#9ca3af', margin: '0 0 4px' }}>
+          {product?.shop_name}
+        </p>
+        <div style={{
+          display: 'flex', justifyContent: 'space-between',
+          alignItems: 'flex-start', marginBottom: 10
+        }}>
+          <p style={{
+            fontSize: 20, fontWeight: 700, color: '#111827',
+            margin: 0, flex: 1, marginRight: 10
+          }}>
+            {product?.name}
+          </p>
+          <p style={{
+            fontSize: 22, fontWeight: 700,
+            color: '#4f46e5', margin: 0, flexShrink: 0
+          }}>
+            ₹{product?.price}
+          </p>
+        </div>
+
+        {/* Category badge */}
+        <span style={{
+          display: 'inline-block', padding: '4px 12px',
+          background: '#eef2ff', color: '#4f46e5',
+          borderRadius: 20, fontSize: 12, fontWeight: 500,
+          textTransform: 'capitalize', marginBottom: 14
+        }}>
+          {product?.category?.gender} · {product?.category?.product_type}
+        </span>
+
+        {/* Description */}
+        {product?.description && (
+          <p style={{
+            fontSize: 14, color: '#6b7280',
+            lineHeight: 1.6, marginBottom: 16
+          }}>
+            {product.description}
+          </p>
+        )}
+
+        {/* Colors */}
+        {colors.length > 0 && (
+          <div style={{ marginBottom: 16 }}>
+            <p style={{
+              fontSize: 13, fontWeight: 600,
+              color: '#374151', marginBottom: 8
+            }}>
+              Color
+            </p>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              {colors.map(color => (
                 <button
-                  key={i}
-                  onClick={() => setSelectedImage(i)}
-                  className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors ${
-                    selectedImage === i ? 'border-primary-600' : 'border-gray-200'
-                  }`}
+                  key={color}
+                  onClick={() => setSelectedColor(color)}
+                  style={{
+                    padding: '8px 16px', borderRadius: 10,
+                    fontSize: 13, cursor: 'pointer',
+                    border: selectedColor === color
+                      ? '2px solid #4f46e5'
+                      : '2px solid #e5e7eb',
+                    background: selectedColor === color ? '#eef2ff' : '#fff',
+                    color: selectedColor === color ? '#4f46e5' : '#6b7280',
+                    fontWeight: 500
+                  }}
                 >
-                  <img src={img.image} alt="" className="w-full h-full object-cover" />
+                  {color}
                 </button>
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
-        {/* Details */}
-        <div>
-          <p className="text-sm text-gray-400 mb-1">{product?.shop_name}</p>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">{product?.name}</h1>
-          <p className="text-3xl font-bold text-primary-600 mb-4">₹{product?.price}</p>
-
-          <span className="inline-block px-3 py-1 bg-primary-50 text-primary-600 text-xs font-medium rounded-full capitalize mb-4">
-            {product?.category?.gender} · {product?.category?.product_type}
-          </span>
-
-          {product?.description && (
-            <p className="text-gray-600 text-sm mb-6 leading-relaxed">
-              {product.description}
+        {/* Sizes */}
+        {sizes.length > 0 && (
+          <div style={{ marginBottom: 16 }}>
+            <p style={{
+              fontSize: 13, fontWeight: 600,
+              color: '#374151', marginBottom: 8
+            }}>
+              Size
             </p>
-          )}
-
-          {colors.length > 0 && (
-            <div className="mb-4">
-              <p className="text-sm font-medium text-gray-700 mb-2">Color</p>
-              <div className="flex gap-2 flex-wrap">
-                {colors.map(color => (
-                  <button
-                    key={color}
-                    onClick={() => setSelectedColor(color)}
-                    className={`px-4 py-2 rounded-lg text-sm border-2 transition-colors ${
-                      selectedColor === color
-                        ? 'border-primary-600 bg-primary-50 text-primary-600'
-                        : 'border-gray-200 text-gray-600 hover:border-gray-300'
-                    }`}
-                  >
-                    {color}
-                  </button>
-                ))}
-              </div>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              {sizes.map(size => (
+                <button
+                  key={size}
+                  onClick={() => setSelectedSize(size)}
+                  style={{
+                    padding: '8px 16px', borderRadius: 10,
+                    fontSize: 13, cursor: 'pointer',
+                    border: selectedSize === size
+                      ? '2px solid #4f46e5'
+                      : '2px solid #e5e7eb',
+                    background: selectedSize === size ? '#eef2ff' : '#fff',
+                    color: selectedSize === size ? '#4f46e5' : '#6b7280',
+                    fontWeight: 500
+                  }}
+                >
+                  {size}
+                </button>
+              ))}
             </div>
-          )}
+          </div>
+        )}
 
-          {sizes.length > 0 && (
-            <div className="mb-6">
-              <p className="text-sm font-medium text-gray-700 mb-2">Size</p>
-              <div className="flex gap-2 flex-wrap">
-                {sizes.map(size => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 rounded-lg text-sm border-2 transition-colors ${
-                      selectedSize === size
-                        ? 'border-primary-600 bg-primary-50 text-primary-600'
-                        : 'border-gray-200 text-gray-600 hover:border-gray-300'
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+        <p style={{
+          fontSize: 13, color: '#10b981',
+          fontWeight: 500, marginBottom: 80
+        }}>
+          {product?.stock > 0
+            ? `✓ ${product.stock} in stock`
+            : '✗ Out of stock'
+          }
+        </p>
 
-          <p className="text-sm text-green-600 mb-6">
-            {product?.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
-          </p>
+      </div>
 
+      {/* Fixed bottom order button */}
+      <div style={{
+        position: 'fixed', bottom: 0, left: 0, right: 0,
+        padding: '12px 16px 20px',
+        background: '#fff',
+        borderTop: '1px solid #f1f5f9',
+        boxShadow: '0 -4px 12px rgba(0,0,0,0.06)'
+      }}>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 16,
+          maxWidth: 600, margin: '0 auto'
+        }}>
+          <div>
+            <p style={{ fontSize: 12, color: '#9ca3af', margin: 0 }}>Total</p>
+            <p style={{ fontSize: 20, fontWeight: 700, color: '#111827', margin: 0 }}>
+              ₹{product?.price}
+            </p>
+          </div>
           <button
             onClick={handleOrder}
             disabled={product?.stock === 0}
-            className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-xl font-medium transition-colors disabled:opacity-50"
+            style={{
+              flex: 1, padding: '14px',
+              background: product?.stock === 0 ? '#d1d5db' : '#4f46e5',
+              color: '#fff', border: 'none', borderRadius: 14,
+              fontSize: 16, fontWeight: 600, cursor: 'pointer'
+            }}
           >
             {product?.stock === 0 ? 'Out of Stock' : 'Order Now (COD)'}
           </button>
         </div>
       </div>
 
-      {/* Direct link footer */}
-      {isDirect && (
-        <div className="mt-12 text-center border-t border-gray-100 pt-8">
-          <p className="text-gray-400 text-sm">Powered by</p>
-          <Link to="/" className="text-primary-600 font-bold text-lg">kartifys</Link>
-        </div>
-      )}
     </div>
   );
 }

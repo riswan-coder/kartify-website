@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { getShopDetail } from '../api/shops';
 import { getProducts } from '../api/products';
+
+const COLORS = [
+  '#4f46e5', '#0891b2', '#059669',
+  '#d97706', '#dc2626', '#7c3aed',
+];
 
 export default function ShopDetail() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const isDirect = searchParams.get('ref') === 'direct';
+  const navigate = useNavigate();
 
   const [shop, setShop] = useState(null);
   const [products, setProducts] = useState([]);
@@ -39,151 +45,245 @@ export default function ShopDetail() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-64">
-        <div className="animate-spin w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full" />
+      <div style={{
+        display: 'flex', alignItems: 'center',
+        justifyContent: 'center', minHeight: 300
+      }}>
+        <div style={{
+          width: 36, height: 36, border: '3px solid #4f46e5',
+          borderTopColor: 'transparent', borderRadius: '50%',
+          animation: 'spin 0.8s linear infinite'
+        }} />
+        <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
       </div>
     );
   }
 
   return (
     <div>
+
       {/* Shop header */}
-      <div className="bg-primary-600 text-white py-10 px-4">
-        <div className="max-w-6xl mx-auto">
+      <div style={{
+        background: 'linear-gradient(135deg, #4f46e5, #4338ca)',
+        padding: '48px 16px 20px'
+      }}>
+        {isDirect ? (
+          <button
+            onClick={() => window.close()}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: 'rgba(255,255,255,0.2)', border: 'none',
+              color: '#fff', padding: '6px 14px', borderRadius: 20,
+              fontSize: 13, cursor: 'pointer', marginBottom: 12
+            }}
+          >
+            ✕ Close
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate(-1)}
+            style={{
+              background: 'rgba(255,255,255,0.2)', border: 'none',
+              color: '#fff', padding: '6px 14px', borderRadius: 20,
+              fontSize: 13, cursor: 'pointer', marginBottom: 12
+            }}
+          >
+            ← Back
+          </button>
+        )}
 
-          {/* Back or Close button */}
-          {isDirect ? (
-            <button
-              onClick={() => {
-                if (window.history.length > 1) {
-                  window.history.back();
-                } else {
-                  window.close();
-                }
-              }}
-              className="flex items-center gap-2 text-primary-200 text-sm hover:text-white mb-4 bg-white bg-opacity-10 px-4 py-2 rounded-lg transition-colors"
-            >
-              <span className="text-lg">✕</span>
-              <span>Close</span>
-            </button>
-          ) : (
-            <Link
-              to="/"
-              className="text-primary-200 text-sm hover:text-white mb-4 inline-block"
-            >
-              ← Back to shops
-            </Link>
-          )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{
+            width: 60, height: 60,
+            background: 'rgba(255,255,255,0.2)',
+            borderRadius: 18, overflow: 'hidden',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0
+          }}>
+            {shop?.logo_url ? (
+              <img
+                src={shop.logo_url}
+                alt={shop.name}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            ) : (
+              <span style={{ color: '#fff', fontSize: 24, fontWeight: 700 }}>
+                {shop?.name?.[0]?.toUpperCase()}
+              </span>
+            )}
+          </div>
+          <div>
+            <p style={{ color: '#fff', fontSize: 20, fontWeight: 700, margin: 0 }}>
+              {shop?.name}
+            </p>
+            <p style={{ color: '#c7d2fe', fontSize: 13, margin: '3px 0 0' }}>
+              {shop?.city} · {shop?.phone}
+            </p>
+            {shop?.category && (
+              <span style={{
+                display: 'inline-block', marginTop: 6,
+                background: 'rgba(255,255,255,0.2)', color: '#fff',
+                padding: '3px 12px', borderRadius: 20, fontSize: 11
+              }}>
+                {shop.category.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+              </span>
+            )}
+          </div>
+        </div>
 
-          {/* Shop info */}
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center overflow-hidden">
-              {shop?.logo_url ? (
-                <img
-                  src={shop.logo_url}
-                  alt={shop.name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <span className="text-white text-2xl font-bold">
-                  {shop?.name?.[0]?.toUpperCase()}
-                </span>
-              )}
-            </div>
+        {isDirect && (
+          <div style={{
+            marginTop: 12, background: 'rgba(255,255,255,0.15)',
+            borderRadius: 12, padding: '10px 14px',
+            display: 'flex', alignItems: 'center', gap: 10
+          }}>
+            <span>🏪</span>
             <div>
-              <h1 className="text-2xl font-bold">{shop?.name}</h1>
-              <p className="text-primary-200 text-sm mt-1">
-                {shop?.city} · {shop?.phone}
+              <p style={{ color: '#fff', fontSize: 13, fontWeight: 500, margin: 0 }}>
+                Welcome to {shop?.name}
               </p>
-              {shop?.category && (
-                <span className="inline-block mt-2 px-3 py-1 bg-white bg-opacity-20 rounded-full text-xs">
-                  {shop.category.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                </span>
-              )}
+              <p style={{ color: '#c7d2fe', fontSize: 12, margin: 0 }}>
+                Browse and order below
+              </p>
             </div>
           </div>
-
-          {/* Direct link badge */}
-          {isDirect && (
-            <div className="mt-4 bg-white bg-opacity-10 rounded-xl px-4 py-3 flex items-center gap-3">
-              <span className="text-xl">🏪</span>
-              <div>
-                <p className="text-sm font-medium">Welcome to {shop?.name}</p>
-                <p className="text-xs text-primary-200 mt-0.5">
-                  Browse products and place orders below
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
+        )}
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div style={{ padding: '14px 14px 0' }}>
 
-        {/* Search and filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
+        {/* Search bar */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 8,
+          background: '#fff', borderRadius: 12, padding: '10px 14px',
+          border: '1px solid #e5e7eb', marginBottom: 10
+        }}>
+          <span>🔍</span>
           <input
             type="text"
-            placeholder="Search products in this shop..."
+            placeholder="Search products..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="flex-1 px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+            style={{
+              flex: 1, border: 'none', outline: 'none',
+              fontSize: 14, color: '#111827'
+            }}
           />
+          {search && (
+            <button
+              onClick={() => setSearch('')}
+              style={{
+                background: 'none', border: 'none',
+                color: '#9ca3af', cursor: 'pointer', fontSize: 14
+              }}
+            >✕</button>
+          )}
         </div>
 
-        <p className="text-sm text-gray-500 mb-4">{filtered.length} products</p>
+        {/* Filter pills */}
+        <div style={{
+          display: 'flex', gap: 6, marginBottom: 12,
+          overflowX: 'auto', paddingBottom: 4,
+          scrollbarWidth: 'none'
+        }}>
+          {['all', 'men', 'women', 'kids', 'clothes', 'shoes'].map(f => (
+            <button
+              key={f}
+              onClick={() => setActiveFilter(f)}
+              style={{
+                flexShrink: 0, padding: '6px 14px',
+                borderRadius: 20, fontSize: 12, fontWeight: 500,
+                cursor: 'pointer', textTransform: 'capitalize',
+                border: activeFilter === f ? 'none' : '1px solid #e5e7eb',
+                background: activeFilter === f ? '#4f46e5' : '#fff',
+                color: activeFilter === f ? '#fff' : '#6b7280',
+              }}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+
+        <p style={{ fontSize: 12, color: '#9ca3af', marginBottom: 10 }}>
+          {filtered.length} products
+        </p>
 
         {/* Products grid */}
         {filtered.length === 0 ? (
-          <div className="text-center py-20 text-gray-400">
-            <p className="text-5xl mb-4">👕</p>
+          <div style={{ textAlign: 'center', padding: '40px 0', color: '#9ca3af' }}>
+            <p style={{ fontSize: 40 }}>👕</p>
             <p>No products found</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: 10, marginBottom: 24
+          }}>
             {filtered.map(product => (
               <Link
                 key={product.id}
                 to={`/product/${product.id}${isDirect ? '?ref=direct&shop=' + id : ''}`}
-                className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
+                style={{ textDecoration: 'none' }}
               >
-                <div className="h-44 bg-primary-50 flex items-center justify-center overflow-hidden">
-                  {product.images?.[0]?.image ? (
-                    <img
-                      src={product.images[0].image}
-                      alt={product.name}
-                      className="w-full h-full object-contain p-1"
-                    />
-                  ) : (
-                    <span className="text-5xl">
-                      {product.category?.product_type === 'shoes' ? '👟' : '👕'}
-                    </span>
-                  )}
-                </div>
-                <div className="p-3">
-                  <p className="font-semibold text-gray-900 text-sm truncate">
-                    {product.name}
-                  </p>
-                  {product.colors && (
-                    <p className="text-xs text-gray-400 mt-0.5">{product.colors}</p>
-                  )}
-                  <p className="text-primary-600 font-bold mt-1">₹{product.price}</p>
+                <div style={{
+                  background: '#fff', borderRadius: 12,
+                  overflow: 'hidden', border: '1px solid #f1f5f9',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                }}>
+                  <div style={{
+                    height: 150, background: '#f8fafc',
+                    display: 'flex', alignItems: 'center',
+                    justifyContent: 'center', overflow: 'hidden'
+                  }}>
+                    {product.images?.[0]?.image ? (
+                      <img
+                        src={product.images[0].image}
+                        alt={product.name}
+                        style={{
+                          width: '100%', height: '100%',
+                          objectFit: 'contain', padding: 4
+                        }}
+                      />
+                    ) : (
+                      <span style={{ fontSize: 48 }}>
+                        {product.category?.product_type === 'shoes' ? '👟' : '👕'}
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ padding: 10 }}>
+                    <p style={{
+                      fontSize: 13, fontWeight: 600, color: '#111827',
+                      margin: 0, overflow: 'hidden',
+                      textOverflow: 'ellipsis', whiteSpace: 'nowrap'
+                    }}>{product.name}</p>
+                    {product.colors && (
+                      <p style={{ fontSize: 11, color: '#9ca3af', margin: '2px 0' }}>
+                        {product.colors}
+                      </p>
+                    )}
+                    <p style={{ fontSize: 15, fontWeight: 700, color: '#4f46e5', margin: 0 }}>
+                      ₹{product.price}
+                    </p>
+                  </div>
                 </div>
               </Link>
             ))}
           </div>
         )}
 
-        {/* Direct link footer */}
         {isDirect && (
-          <div className="mt-12 text-center border-t border-gray-100 pt-8">
-            <p className="text-gray-400 text-sm">Powered by</p>
-            <Link to="/" className="text-primary-600 font-bold text-lg">kartifys</Link>
-            <p className="text-gray-400 text-xs mt-1">
-              Shop local · delivered to you
-            </p>
+          <div style={{
+            textAlign: 'center', padding: '16px 0 24px',
+            borderTop: '1px solid #f1f5f9'
+          }}>
+            <p style={{ color: '#9ca3af', fontSize: 12, margin: 0 }}>Powered by</p>
+            <Link to="/" style={{ color: '#4f46e5', fontWeight: 700, fontSize: 16, textDecoration: 'none' }}>
+              TrendKart
+            </Link>
           </div>
         )}
+
       </div>
     </div>
   );

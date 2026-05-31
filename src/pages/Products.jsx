@@ -29,99 +29,210 @@ export default function Products() {
   }, [fetchProducts]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Search Products</h1>
+    <div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-4 mb-6">
-        <input
-          type="text"
-          placeholder="Search by name, color, size..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 mb-4"
-          autoFocus
-        />
-        <div className="flex gap-3 flex-wrap">
-          <div className="flex gap-2">
-            {['', 'men', 'women', 'kids'].map(g => (
-              <button
-                key={g}
-                onClick={() => setGender(g)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                  gender === g
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                {g === '' ? 'All' : g.charAt(0).toUpperCase() + g.slice(1)}
-              </button>
-            ))}
-          </div>
-          <div className="flex gap-2">
-            {['', 'clothes', 'shoes'].map(t => (
-              <button
-                key={t}
-                onClick={() => setType(t)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                  type === t
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                {t === '' ? 'All types' : t.charAt(0).toUpperCase() + t.slice(1)}
-              </button>
-            ))}
-          </div>
-        </div>
+      {/* Header */}
+      <div style={{
+        background: 'linear-gradient(135deg, #4f46e5, #4338ca)',
+        padding: '48px 16px 20px'
+      }}>
+        <p style={{ color: '#c7d2fe', fontSize: 13, margin: '0 0 6px' }}>
+          TrendKart
+        </p>
+        <p style={{ color: '#fff', fontSize: 22, fontWeight: 700, margin: 0 }}>
+          Search Products
+        </p>
       </div>
 
-      <p className="text-sm text-gray-500 mb-4">{products.length} products found</p>
+      <div style={{ padding: '14px 14px 0' }}>
 
-      {loading ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[...Array(8)].map((_, i) => (
-            <div key={i} className="bg-gray-100 rounded-xl h-52 animate-pulse" />
-          ))}
+        {/* Search input */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 8,
+          background: '#fff', borderRadius: 12, padding: '11px 14px',
+          border: '2px solid #4f46e5', marginBottom: 12
+        }}>
+          <span style={{ fontSize: 16 }}>🔍</span>
+          <input
+            type="text"
+            placeholder="Search by name, color, size..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            autoFocus
+            style={{
+              flex: 1, border: 'none', outline: 'none',
+              fontSize: 14, color: '#111827'
+            }}
+          />
+          {search && (
+            <button
+              onClick={() => setSearch('')}
+              style={{
+                background: 'none', border: 'none',
+                color: '#9ca3af', cursor: 'pointer', fontSize: 16
+              }}
+            >✕</button>
+          )}
         </div>
-      ) : products.length === 0 ? (
-        <div className="text-center py-20 text-gray-400">
-          <p className="text-5xl mb-4">🔍</p>
-          <p className="text-lg">No products found</p>
-          <p className="text-sm mt-2">Try different keywords</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {products.map(product => (
-            <Link
-              key={product.id}
-              to={`/product/${product.id}`}
-              className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
+
+        {/* Hint */}
+        {!search && (
+          <div style={{
+            background: '#eef2ff', borderRadius: 10,
+            padding: '10px 14px', marginBottom: 12
+          }}>
+            <p style={{ fontSize: 12, color: '#6366f1', margin: 0 }}>
+              💡 Try: "blue linen shirt", "white shoes", "size 42"
+            </p>
+          </div>
+        )}
+
+        {/* Gender filter */}
+        <div style={{
+          display: 'flex', gap: 6, marginBottom: 8,
+          overflowX: 'auto', scrollbarWidth: 'none'
+        }}>
+          {[
+            { key: '', label: 'All' },
+            { key: 'men', label: '👔 Men' },
+            { key: 'women', label: '👗 Women' },
+            { key: 'kids', label: '🧒 Kids' },
+          ].map(g => (
+            <button
+              key={g.key}
+              onClick={() => setGender(g.key)}
+              style={{
+                flexShrink: 0, padding: '7px 16px',
+                borderRadius: 20, fontSize: 12, fontWeight: 500,
+                cursor: 'pointer',
+                border: gender === g.key ? 'none' : '1px solid #e5e7eb',
+                background: gender === g.key ? '#4f46e5' : '#fff',
+                color: gender === g.key ? '#fff' : '#6b7280',
+              }}
             >
-              <div className="h-44 bg-primary-50 flex items-center justify-center overflow-hidden">
-                {product.images?.[0]?.image ? (
-                  <img
-                    src={product.images[0].image}
-                    alt={product.name}
-                    className="w-full h-full object-contain"
-                  />
-                ) : (
-                  <span className="text-5xl">
-                    {product.category?.product_type === 'shoes' ? '👟' : '👕'}
-                  </span>
-                )}
-              </div>
-              <div className="p-3">
-                <p className="font-semibold text-gray-900 text-sm truncate">{product.name}</p>
-                <p className="text-gray-400 text-xs mt-0.5">{product.shop_name}</p>
-                {product.colors && (
-                  <p className="text-primary-500 text-xs mt-0.5">{product.colors}</p>
-                )}
-                <p className="text-primary-600 font-bold mt-1">₹{product.price}</p>
-              </div>
-            </Link>
+              {g.label}
+            </button>
           ))}
         </div>
-      )}
+
+        {/* Type filter */}
+        <div style={{
+          display: 'flex', gap: 6, marginBottom: 12,
+          overflowX: 'auto', scrollbarWidth: 'none'
+        }}>
+          {[
+            { key: '', label: 'All types' },
+            { key: 'clothes', label: '👕 Clothes' },
+            { key: 'shoes', label: '👟 Shoes' },
+          ].map(t => (
+            <button
+              key={t.key}
+              onClick={() => setType(t.key)}
+              style={{
+                flexShrink: 0, padding: '7px 16px',
+                borderRadius: 20, fontSize: 12, fontWeight: 500,
+                cursor: 'pointer',
+                border: type === t.key ? 'none' : '1px solid #e5e7eb',
+                background: type === t.key ? '#4f46e5' : '#fff',
+                color: type === t.key ? '#fff' : '#6b7280',
+              }}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        <p style={{ fontSize: 12, color: '#9ca3af', marginBottom: 10 }}>
+          {products.length} products found
+          {search ? ` for "${search}"` : ''}
+        </p>
+
+        {/* Products */}
+        {loading ? (
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)', gap: 10
+          }}>
+            {[...Array(6)].map((_, i) => (
+              <div key={i} style={{
+                height: 200, borderRadius: 12, background: '#f1f5f9'
+              }} />
+            ))}
+          </div>
+        ) : products.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '60px 0', color: '#9ca3af' }}>
+            <p style={{ fontSize: 48 }}>🔍</p>
+            <p style={{ fontSize: 15, color: '#374151', fontWeight: 500 }}>
+              {search ? `No results for "${search}"` : 'No products yet'}
+            </p>
+            {search && (
+              <p style={{ fontSize: 13, marginTop: 6 }}>
+                Try different keywords like color or size
+              </p>
+            )}
+          </div>
+        ) : (
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: 10, marginBottom: 24
+          }}>
+            {products.map(product => (
+              <Link
+                key={product.id}
+                to={`/product/${product.id}`}
+                style={{ textDecoration: 'none' }}
+              >
+                <div style={{
+                  background: '#fff', borderRadius: 12,
+                  overflow: 'hidden', border: '1px solid #f1f5f9',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                }}>
+                  <div style={{
+                    height: 150, background: '#f8fafc',
+                    display: 'flex', alignItems: 'center',
+                    justifyContent: 'center', overflow: 'hidden'
+                  }}>
+                    {product.images?.[0]?.image ? (
+                      <img
+                        src={product.images[0].image}
+                        alt={product.name}
+                        style={{
+                          width: '100%', height: '100%',
+                          objectFit: 'contain', padding: 4
+                        }}
+                      />
+                    ) : (
+                      <span style={{ fontSize: 48 }}>
+                        {product.category?.product_type === 'shoes' ? '👟' : '👕'}
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ padding: 10 }}>
+                    <p style={{
+                      fontSize: 13, fontWeight: 600, color: '#111827',
+                      margin: 0, overflow: 'hidden',
+                      textOverflow: 'ellipsis', whiteSpace: 'nowrap'
+                    }}>{product.name}</p>
+                    <p style={{ fontSize: 11, color: '#9ca3af', margin: '2px 0' }}>
+                      {product.shop_name}
+                    </p>
+                    {product.colors && (
+                      <p style={{ fontSize: 11, color: '#6366f1', margin: '2px 0' }}>
+                        {product.colors}
+                      </p>
+                    )}
+                    <p style={{ fontSize: 15, fontWeight: 700, color: '#4f46e5', margin: 0 }}>
+                      ₹{product.price}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }

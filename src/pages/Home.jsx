@@ -34,8 +34,6 @@ export default function Home() {
       }
       if (popupRes.data && popupRes.data.image_url) {
         setPopupAd(popupRes.data);
-
-        // Only show popup ONCE per session
         const adShown = sessionStorage.getItem('adShown');
         if (!adShown) {
           setTimeout(() => {
@@ -47,7 +45,6 @@ export default function Home() {
     }).finally(() => setLoading(false));
   }, []);
 
-  // Auto scroll banner every 5 seconds
   useEffect(() => {
     if (bannerAds.length > 1) {
       const interval = setInterval(() => {
@@ -63,7 +60,7 @@ export default function Home() {
   );
 
   return (
-    <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+    <div>
 
       {/* Popup Ad */}
       {showPopup && popupAd && (
@@ -82,7 +79,7 @@ export default function Home() {
               onClick={() => setShowPopup(false)}
               style={{
                 position: 'absolute', top: 10, right: 10,
-                width: 30, height: 30, borderRadius: '50%',
+                width: 32, height: 32, borderRadius: '50%',
                 background: 'rgba(0,0,0,0.5)', color: '#fff',
                 border: 'none', cursor: 'pointer', fontSize: 16,
                 display: 'flex', alignItems: 'center',
@@ -97,7 +94,7 @@ export default function Home() {
                 src={popupAd.image_url}
                 alt="Ad"
                 style={{
-                  width: '100%', maxHeight: 300,
+                  width: '100%', maxHeight: 320,
                   objectFit: 'cover', display: 'block'
                 }}
               />
@@ -132,11 +129,8 @@ export default function Home() {
       {/* Purple header */}
       <div style={{
         background: 'linear-gradient(135deg, #4f46e5, #4338ca)',
-        padding: '48px 16px 16px',
-        maxWidth: 1200,
-        margin: '0 auto'
+        padding: '48px 16px 16px'
       }}>
-        {/* Search products */}
         <Link
           to="/products"
           style={{
@@ -153,7 +147,6 @@ export default function Home() {
           <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 20 }}>›</span>
         </Link>
 
-        {/* Search shops */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: 8,
           background: 'rgba(255,255,255,0.15)',
@@ -174,14 +167,14 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Banner Ads — full width scroll */}
+      {/* Banner Ads */}
       {bannerAds.length > 0 && (
         <div style={{ margin: '12px 14px 0' }}>
           <div style={{
             borderRadius: 16, overflow: 'hidden',
             height: 160, position: 'relative',
             background: '#4f46e5'
-          }} className="home-banner">
+          }}>
             {bannerAds.map((ad, index) => (
               <Link
                 key={ad.id}
@@ -218,22 +211,16 @@ export default function Home() {
                   padding: '20px 14px 10px',
                   background: 'linear-gradient(transparent, rgba(0,0,0,0.65))'
                 }}>
-                  <p style={{
-                    color: '#fff', fontWeight: 700, fontSize: 14, margin: 0
-                  }}>
+                  <p style={{ color: '#fff', fontWeight: 700, fontSize: 14, margin: 0 }}>
                     {ad.shop?.name}
                   </p>
-                  <p style={{
-                    color: 'rgba(255,255,255,0.8)', fontSize: 12, margin: 0
-                  }}>
+                  <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 12, margin: 0 }}>
                     {ad.shop?.city}
                   </p>
                 </div>
               </Link>
             ))}
           </div>
-
-          {/* Dots indicator */}
           {bannerAds.length > 1 && (
             <div style={{
               display: 'flex', justifyContent: 'center',
@@ -257,29 +244,24 @@ export default function Home() {
         </div>
       )}
 
-      {/* Gender filter — SINGLE ROW 3 buttons only */}
+      {/* Gender filter — single row 3 buttons */}
       <div style={{
         display: 'flex', gap: 10,
         padding: '14px 14px 6px',
       }}>
         {[
-          { key: 'men', label: '👔 Men', color: 'rgb(5, 173, 137)' },
-          { key: 'women', label: '👗 Women', color: 'rgb(5, 173, 137)' },
-          { key: 'kids', label: '🧒 Kids', color: 'rgb(5, 173, 137)' },
+          { key: 'men', label: '👔 Men', color: '#0891b2' },
+          { key: 'women', label: '👗 Women', color: '#dc2626' },
+          { key: 'kids', label: '🧒 Kids', color: '#059669' },
         ].map(g => (
           <button
             key={g.key}
             onClick={() => navigate(`/category/${g.key}`)}
             style={{
-              flex: 1,
-              padding: '12px 0',
-              borderRadius: 12,
-              border: 'none',
-              background: g.color,
-              color: '#fff',
-              fontSize: 13,
-              fontWeight: 600,
-              cursor: 'pointer',
+              flex: 1, padding: '12px 0',
+              borderRadius: 12, border: 'none',
+              background: g.color, color: '#fff',
+              fontSize: 13, fontWeight: 600, cursor: 'pointer',
               boxShadow: `0 3px 8px ${g.color}55`,
             }}
           >
@@ -303,7 +285,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Shops grid 3 per row */}
         {loading ? (
           <div style={{
             display: 'grid',
@@ -311,8 +292,7 @@ export default function Home() {
           }}>
             {[...Array(6)].map((_, i) => (
               <div key={i} style={{
-                height: 110, borderRadius: 12,
-                background: '#f1f5f9'
+                height: 110, borderRadius: 12, background: '#f1f5f9'
               }} />
             ))}
           </div>
@@ -326,7 +306,7 @@ export default function Home() {
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
             gap: 8, marginBottom: 20
-          }} className="home-shops-grid">
+          }}>
             {filteredShops.map((shop, index) => (
               <Link
                 key={shop.id}
@@ -348,14 +328,10 @@ export default function Home() {
                       <img
                         src={shop.logo_url}
                         alt={shop.name}
-                        style={{
-                          width: '100%', height: '100%', objectFit: 'cover'
-                        }}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
                     ) : (
-                      <span style={{
-                        color: '#fff', fontSize: 24, fontWeight: 700
-                      }}>
+                      <span style={{ color: '#fff', fontSize: 24, fontWeight: 700 }}>
                         {shop.name[0].toUpperCase()}
                       </span>
                     )}
@@ -400,15 +376,13 @@ export default function Home() {
             <Link to="/products" style={{
               color: '#4f46e5', fontSize: 13,
               fontWeight: 500, textDecoration: 'none'
-            }}>
-              View all →
-            </Link>
+            }}>View all →</Link>
           </div>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
             gap: 10
-          }} className="home-products-grid">
+          }}>
             {featuredProducts.map(product => (
               <Link
                 key={product.id}
@@ -421,7 +395,7 @@ export default function Home() {
                   boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
                 }}>
                   <div style={{
-                    height: 130, background: '#eef2ff',
+                    height: 140, background: '#f8fafc',
                     display: 'flex', alignItems: 'center',
                     justifyContent: 'center', overflow: 'hidden'
                   }}>
@@ -430,7 +404,8 @@ export default function Home() {
                         src={product.images[0].image}
                         alt={product.name}
                         style={{
-                          width: '100%', height: '100%', objectFit: 'contain'
+                          width: '100%', height: '100%',
+                          objectFit: 'contain', padding: 4
                         }}
                       />
                     ) : (
@@ -444,17 +419,11 @@ export default function Home() {
                       fontSize: 13, fontWeight: 600, color: '#111827',
                       margin: 0, overflow: 'hidden',
                       textOverflow: 'ellipsis', whiteSpace: 'nowrap'
-                    }}>
-                      {product.name}
-                    </p>
-                    <p style={{
-                      fontSize: 11, color: '#9ca3af', margin: '2px 0'
-                    }}>
+                    }}>{product.name}</p>
+                    <p style={{ fontSize: 11, color: '#9ca3af', margin: '2px 0' }}>
                       {product.shop_name}
                     </p>
-                    <p style={{
-                      fontSize: 15, fontWeight: 700, color: '#4f46e5', margin: 0
-                    }}>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: '#4f46e5', margin: 0 }}>
                       ₹{product.price}
                     </p>
                   </div>

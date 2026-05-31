@@ -10,8 +10,6 @@ export default function Login() {
   const { loginUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Get the page user was trying to visit before login
   const from = location.state?.from || '/';
 
   const handleSubmit = async (e) => {
@@ -30,7 +28,6 @@ export default function Login() {
       }
       loginUser(userData, access, refresh);
       toast.success(`Welcome back, ${userData.username}!`);
-      // Go back to where they came from
       navigate(from, { replace: true });
     } catch {
       toast.error('Invalid username or password');
@@ -40,49 +37,91 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="w-14 h-14 bg-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-2xl font-bold">T</span>
+    <div style={{
+      minHeight: '100vh', display: 'flex',
+      alignItems: 'center', justifyContent: 'center',
+      padding: 16, background: '#f8fafc'
+    }}>
+      <div style={{
+        background: '#fff', borderRadius: 20,
+        boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
+        padding: 32, width: '100%', maxWidth: 400
+      }}>
+        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+          <div style={{
+            width: 56, height: 56, background: '#4f46e5',
+            borderRadius: 16, display: 'flex',
+            alignItems: 'center', justifyContent: 'center',
+            margin: '0 auto 12px'
+          }}>
+            <span style={{ color: '#fff', fontWeight: 800, fontSize: 24 }}>T</span>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">TrendKart</h1>
-          <p className="text-gray-500 text-sm mt-1">Sign in to continue</p>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#111827', margin: 0 }}>
+            TrendKart
+          </h1>
+          <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 4 }}>
+            {from !== '/' ? 'Sign in to continue your order' : 'Sign in to your account'}
+          </p>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: 16 }}>
+            <label style={{
+              display: 'block', fontSize: 13,
+              fontWeight: 500, color: '#374151', marginBottom: 6
+            }}>Username</label>
             <input
               required
               type="text"
               value={form.username}
               onChange={e => setForm({ ...form, username: e.target.value })}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+              style={{
+                width: '100%', padding: '10px 14px',
+                border: '1px solid #e5e7eb', borderRadius: 10,
+                fontSize: 14, outline: 'none', boxSizing: 'border-box'
+              }}
               placeholder="Enter username"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <div style={{ marginBottom: 20 }}>
+            <label style={{
+              display: 'block', fontSize: 13,
+              fontWeight: 500, color: '#374151', marginBottom: 6
+            }}>Password</label>
             <input
               required
               type="password"
               value={form.password}
               onChange={e => setForm({ ...form, password: e.target.value })}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+              style={{
+                width: '100%', padding: '10px 14px',
+                border: '1px solid #e5e7eb', borderRadius: 10,
+                fontSize: 14, outline: 'none', boxSizing: 'border-box'
+              }}
               placeholder="Enter password"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2.5 rounded-lg font-medium transition-colors disabled:opacity-60"
+            style={{
+              width: '100%', padding: '12px',
+              background: loading ? '#a5b4fc' : '#4f46e5',
+              color: '#fff', border: 'none', borderRadius: 10,
+              fontSize: 15, fontWeight: 600, cursor: 'pointer'
+            }}
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
-        <p className="text-center text-sm text-gray-500 mt-6">
+
+        <p style={{ textAlign: 'center', fontSize: 13, color: '#9ca3af', marginTop: 20 }}>
           Don't have an account?{' '}
-          <Link to="/register" state={{ from }} className="text-primary-600 font-medium hover:underline">
+          <Link
+            to="/register"
+            state={{ from }}
+            style={{ color: '#4f46e5', fontWeight: 500, textDecoration: 'none' }}
+          >
             Register
           </Link>
         </p>
