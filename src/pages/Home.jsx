@@ -195,9 +195,9 @@ export default function Home() {
         {/* Gender filter */}
         <div className="gender-filter">
           {[
-            { key: 'men', label: '👔 Men', color: '#0891b2' },
-            { key: 'women', label: '👗 Women', color: '#dc2626' },
-            { key: 'kids', label: '🧒 Kids', color: '#059669' },
+            { key: 'men', label: '👔 Men', color: '#024f7c' },
+            { key: 'women', label: '👗 Women', color: '#003496' },
+            { key: 'kids', label: '🧒 Kids', color: '#051ca1' },
           ].map(g => (
             <button
               key={g.key}
