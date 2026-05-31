@@ -3,10 +3,6 @@ import { Link, useParams, useSearchParams, useNavigate } from 'react-router-dom'
 import { getShopDetail } from '../api/shops';
 import { getProducts } from '../api/products';
 
-const COLORS = [
-  '#4f46e5', '#0891b2', '#059669',
-  '#d97706', '#dc2626', '#7c3aed',
-];
 
 export default function ShopDetail() {
   const { id } = useParams();
@@ -18,7 +14,9 @@ export default function ShopDetail() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  // eslint-disable-next-line
   const [activeFilter, setActiveFilter] = useState('all');
+
 
   useEffect(() => {
     Promise.all([getShopDetail(id), getProducts({ shop: id })])

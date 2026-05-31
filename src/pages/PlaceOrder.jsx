@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, } from 'react-router-dom';
 import { placeOrder } from '../api/orders';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -26,7 +26,6 @@ const POLICY_ML = [
 
 export default function PlaceOrder() {
   const { state } = useLocation();
-  const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
 
