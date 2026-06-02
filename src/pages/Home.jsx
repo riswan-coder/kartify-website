@@ -124,22 +124,73 @@ export default function Home() {
       )}
 
       {/* Header */}
-      <div className="purple-header">
-        <div className="purple-header-inner">
-          <Link to="/products" className="search-btn">
-            <span>🔍</span>
-            <span>Search products...</span>
-          </Link>
-          <div className="search-input-box">
-            <span>🏪</span>
-            <input
-              type="text"
-              placeholder="Search shops..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
-          </div>
+      <div style={{
+        background: '#4f46e5',
+        padding: '50px 14px 14px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 8,
+      }}>
+
+        {/* App name row */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 4,
+        }}>
         </div>
+
+        {/* Search products button */}
+        <Link
+          to="/products"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            background: 'rgba(255,255,255,0.15)',
+            borderRadius: 8,
+            padding: '10px 14px',
+            textDecoration: 'none',
+          }}
+        >
+          <span style={{ fontSize: 14 }}>🛍️</span>
+          <span style={{
+            color: '#fff',
+            fontSize: 13,
+            fontWeight: 500,
+            flex: 1,
+          }}>Browse all products</span>
+          <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 16 }}>›</span>
+        </Link>
+
+        {/* Search shops */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          background: '#6d74d6',
+          borderRadius: 8,
+          padding: '10px 14px',
+        }}>
+          <span style={{ fontSize: 14 }}>🔍</span>
+          <input
+            type="text"
+            placeholder="Search shops..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{
+              flex: 1,
+              border: 'none',
+              outline: 'none',
+              fontSize: 14,
+              color: '#111827',
+              background: 'transparent',
+            }}
+          />
+        </div>
+
+
       </div>
 
       {/* Main content */}
