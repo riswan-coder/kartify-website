@@ -330,26 +330,91 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="product-grid">
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 10,
+          padding: '0 14px',
+          marginBottom: 24,
+        }}>
           {featuredProducts.map(product => (
             <Link
               key={product.id}
               to={`/product/${product.id}`}
-              className="product-card"
+              style={{
+                textDecoration: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                background: '#fff',
+                borderRadius: 12,
+                overflow: 'hidden',
+                border: '1px solid #f1f5f9',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+              }}
             >
-              <div className="product-card-img">
+              <div style={{
+                width: '100%',
+                height: 150,
+                minHeight: 150,
+                maxHeight: 150,
+                background: '#f8fafc',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+                flexShrink: 0,
+              }}>
                 {product.images?.[0]?.image ? (
-                  <img src={product.images[0].image} alt={product.name} />
+                  <img
+                    src={product.images[0].image}
+                    alt={product.name}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                      padding: 6,
+                      display: 'block',
+                    }}
+                  />
                 ) : (
-                  <span style={{ fontSize: 48 }}>
+                  <span style={{ fontSize: 44 }}>
                     {product.category?.product_type === 'shoes' ? '👟' : '👕'}
                   </span>
                 )}
               </div>
-              <div className="product-card-body">
-                <p className="product-card-name">{product.name}</p>
-                <p className="product-card-shop">{product.shop_name}</p>
-                <p className="product-card-price">₹{product.price}</p>
+              <div style={{
+                padding: '8px 10px',
+                height: 70,
+                minHeight: 70,
+                maxHeight: 70,
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}>
+                <p style={{
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: '#111827',
+                  margin: 0,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}>{product.name}</p>
+                <p style={{
+                  fontSize: 11,
+                  color: '#9ca3af',
+                  margin: 0,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}>{product.shop_name}</p>
+                <p style={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: '#4f46e5',
+                  margin: 0,
+                }}>₹{product.price}</p>
               </div>
             </Link>
           ))}
