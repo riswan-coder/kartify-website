@@ -55,7 +55,7 @@ export default function ProductDetail() {
         justifyContent: 'center', minHeight: 300
       }}>
         <div style={{
-          width: 36, height: 36, border: '3px solid #4f46e5',
+          width: 36, height: 36, border: '3px solid #000000',
           borderTopColor: 'transparent', borderRadius: '50%',
           animation: 'spin 0.8s linear infinite'
         }} />
@@ -76,8 +76,8 @@ export default function ProductDetail() {
         <button
           onClick={handleBack}
           style={{
-            background: '#eef2ff', border: 'none',
-            color: '#4f46e5', padding: '8px 16px',
+            background: '#020202', border: 'none',
+            color: '#ffffff', padding: '8px 16px',
             borderRadius: 20, fontSize: 13,
             fontWeight: 500, cursor: 'pointer'
           }}
@@ -88,7 +88,7 @@ export default function ProductDetail() {
 
       {/* Main image */}
       <div style={{
-        height: 300, background: '#f8fafc', margin: '12px 0',
+        height: 300, background: '#000000', margin: '12px 0',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         overflow: 'hidden'
       }}>
@@ -123,9 +123,9 @@ export default function ProductDetail() {
                 flexShrink: 0, width: 64, height: 64,
                 borderRadius: 10, overflow: 'hidden',
                 border: selectedImage === i
-                  ? '2px solid #4f46e5'
-                  : '2px solid #e5e7eb',
-                padding: 0, cursor: 'pointer', background: '#f8fafc'
+                  ? '2px solid #020202'
+                  : '2px solid #000000',
+                padding: 0, cursor: 'pointer', background: '#000000'
               }}
             >
               <img
@@ -141,7 +141,7 @@ export default function ProductDetail() {
       <div style={{ padding: '0 16px' }}>
 
         {/* Shop and name */}
-        <p style={{ fontSize: 12, color: '#9ca3af', margin: '0 0 4px' }}>
+        <p style={{ fontSize: 12, color: '#ffffff', margin: '0 0 4px' }}>
           {product?.shop_name}
         </p>
         <div style={{
@@ -149,14 +149,14 @@ export default function ProductDetail() {
           alignItems: 'flex-start', marginBottom: 10
         }}>
           <p style={{
-            fontSize: 20, fontWeight: 700, color: '#111827',
+            fontSize: 20, fontWeight: 700, color: '#ffffff',
             margin: 0, flex: 1, marginRight: 10
           }}>
             {product?.name}
           </p>
           <p style={{
             fontSize: 22, fontWeight: 700,
-            color: '#4f46e5', margin: 0, flexShrink: 0
+            color: '#ffffff', margin: 0, flexShrink: 0
           }}>
             ₹{product?.price}
           </p>
@@ -165,7 +165,7 @@ export default function ProductDetail() {
         {/* Category badge */}
         <span style={{
           display: 'inline-block', padding: '4px 12px',
-          background: '#eef2ff', color: '#4f46e5',
+          background: '#000000', color: '#ffffff',
           borderRadius: 20, fontSize: 12, fontWeight: 500,
           textTransform: 'capitalize', marginBottom: 14
         }}>
@@ -175,7 +175,7 @@ export default function ProductDetail() {
         {/* Description */}
         {product?.description && (
           <p style={{
-            fontSize: 14, color: '#6b7280',
+            fontSize: 14, color: '#ffffffb7',
             lineHeight: 1.6, marginBottom: 16
           }}>
             {product.description}
@@ -187,7 +187,7 @@ export default function ProductDetail() {
           <div style={{ marginBottom: 16 }}>
             <p style={{
               fontSize: 13, fontWeight: 600,
-              color: '#374151', marginBottom: 8
+              color: '#ffffffd8', marginBottom: 8
             }}>
               Color
             </p>
@@ -200,10 +200,10 @@ export default function ProductDetail() {
                     padding: '8px 16px', borderRadius: 10,
                     fontSize: 13, cursor: 'pointer',
                     border: selectedColor === color
-                      ? '2px solid #4f46e5'
-                      : '2px solid #e5e7eb',
-                    background: selectedColor === color ? '#eef2ff' : '#fff',
-                    color: selectedColor === color ? '#4f46e5' : '#6b7280',
+                      ? '2px solid #000000'
+                      : '2px solid #000000',
+                    background: selectedColor === color ? '#ffffff62' : '#aa0000',
+                    color: selectedColor === color ? '#aa0000e3' : '#ffffffe7',
                     fontWeight: 500
                   }}
                 >
@@ -219,7 +219,7 @@ export default function ProductDetail() {
           <div style={{ marginBottom: 16 }}>
             <p style={{
               fontSize: 13, fontWeight: 600,
-              color: '#374151', marginBottom: 8
+              color: '#ffffffe1', marginBottom: 8
             }}>
               Size
             </p>
@@ -232,10 +232,10 @@ export default function ProductDetail() {
                     padding: '8px 16px', borderRadius: 10,
                     fontSize: 13, cursor: 'pointer',
                     border: selectedSize === size
-                      ? '2px solid #4f46e5'
-                      : '2px solid #e5e7eb',
-                    background: selectedSize === size ? '#eef2ff' : '#fff',
-                    color: selectedSize === size ? '#4f46e5' : '#6b7280',
+                      ? '2px solid #000000'
+                      : '2px solid #000000',
+                    background: selectedSize === size ? '#ffffff70' : '#a00000',
+                    color: selectedSize === size ? '#ad0000e8' : '#ffffffee',
                     fontWeight: 500
                   }}
                 >
@@ -262,8 +262,8 @@ export default function ProductDetail() {
       <div style={{
         position: 'fixed', bottom: 0, left: 0, right: 0,
         padding: '12px 16px 20px',
-        background: '#fff',
-        borderTop: '1px solid #f1f5f9',
+        background: '#000000',
+        borderTop: '1px solid #000000',
         boxShadow: '0 -4px 12px rgba(0,0,0,0.06)'
       }}>
         <div style={{
@@ -271,8 +271,8 @@ export default function ProductDetail() {
           maxWidth: 600, margin: '0 auto'
         }}>
           <div>
-            <p style={{ fontSize: 12, color: '#9ca3af', margin: 0 }}>Total</p>
-            <p style={{ fontSize: 20, fontWeight: 700, color: '#111827', margin: 0 }}>
+            <p style={{ fontSize: 12, color: '#ffffff', margin: 0 }}>Total</p>
+            <p style={{ fontSize: 20, fontWeight: 700, color: '#ffffff', margin: 0 }}>
               ₹{product?.price}
             </p>
           </div>
@@ -281,8 +281,8 @@ export default function ProductDetail() {
             disabled={product?.stock === 0}
             style={{
               flex: 1, padding: '14px',
-              background: product?.stock === 0 ? '#d1d5db' : '#4f46e5',
-              color: '#fff', border: 'none', borderRadius: 14,
+              background: product?.stock === 0 ? '#ffffff8a' : '#ad0000',
+              color: '#ffffff', border: 'none', borderRadius: 14,
               fontSize: 16, fontWeight: 600, cursor: 'pointer'
             }}
           >

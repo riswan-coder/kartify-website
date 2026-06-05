@@ -43,8 +43,8 @@ export default function Category() {
 
       {/* Header */}
       <div style={{
-        background: info.color,
-        padding: '48px 16px 20px'
+        background:  'linear-gradient(135deg, #0f0f0f, #880505)',
+        padding: '10px 16px 20px'
       }}>
         <button
           onClick={() => navigate('/')}
@@ -74,7 +74,7 @@ export default function Category() {
         padding: '14px 14px 6px'
       }}>
         {[
-          { key: '', label: `All ${info.label}` },
+        
           { key: 'clothes', label: `${info.emoji} Clothes` },
           { key: 'shoes', label: `👟 Shoes` },
         ].map(t => (
@@ -84,9 +84,9 @@ export default function Category() {
             style={{
               flex: 1, padding: '11px 0',
               borderRadius: 12,
-              border: activeType === t.key ? 'none' : '1px solid #e5e7eb',
-              background: activeType === t.key ? info.color : '#fff',
-              color: activeType === t.key ? '#fff' : '#6b7280',
+              border: activeType === t.key ? 'none' : '1px solid #000000',
+              background: activeType === t.key ? info.color : '#770202',
+              color: activeType === t.key ? '#ffffff8f' : '#ffffff86',
               fontSize: 13, fontWeight: 600, cursor: 'pointer',
             }}
           >
@@ -101,15 +101,15 @@ export default function Category() {
           to={`/products?gender=${gender}`}
           style={{
             display: 'flex', alignItems: 'center', gap: 10,
-            background: '#eef2ff', borderRadius: 12,
+            background: '#eef2ffb2', borderRadius: 12,
             padding: '12px 16px', textDecoration: 'none',
           }}
         >
           <span>🔍</span>
-          <span style={{ color: '#4f46e5', fontSize: 14, fontWeight: 500, flex: 1 }}>
+          <span style={{ color: '#02020c62', fontSize: 14, fontWeight: 500, flex: 1 }}>
             Search {info.label.toLowerCase()} products
           </span>
-          <span style={{ color: '#4f46e5', fontSize: 20 }}>›</span>
+          <span style={{ color: '#e3e2f1', fontSize: 20 }}>›</span>
         </Link>
       </div>
 
@@ -117,7 +117,7 @@ export default function Category() {
       <div style={{ padding: '4px 14px 24px' }}>
         <p style={{
           fontSize: 15, fontWeight: 700,
-          color: '#111827', marginBottom: 12
+          color: '#fcfcfc', marginBottom: 12
         }}>
           {info.label} Shops
         </p>
@@ -130,7 +130,7 @@ export default function Category() {
             {[...Array(6)].map((_, i) => (
               <div key={i} style={{
                 height: 110, borderRadius: 12,
-                background: '#f1f5f9'
+                background: '#000000'
               }} />
             ))}
           </div>
@@ -140,62 +140,30 @@ export default function Category() {
             <p>No shops found</p>
           </div>
         ) : (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: 8
-          }}>
+          <div className="shop-grid">
             {filteredShops.map((shop, index) => (
               <Link
                 key={shop.id}
                 to={`/shop/${shop.id}`}
-                style={{ textDecoration: 'none' }}
+                className="shop-card"
               >
-                <div style={{
-                  background: '#fff', borderRadius: 12,
-                  overflow: 'hidden', border: '1px solid #f1f5f9',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
-                }}>
-                  <div style={{
-                    height: 64,
-                    background: COLORS[index % COLORS.length],
-                    display: 'flex', alignItems: 'center',
-                    justifyContent: 'center', overflow: 'hidden'
-                  }}>
-                    {shop.logo_url ? (
-                      <img
-                        src={shop.logo_url}
-                        alt={shop.name}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    ) : (
-                      <span style={{ color: '#fff', fontSize: 24, fontWeight: 700 }}>
-                        {shop.name[0].toUpperCase()}
-                      </span>
-                    )}
-                  </div>
-                  <div style={{ padding: 8 }}>
-                    <p style={{
-                      fontSize: 11, fontWeight: 600, color: '#111827',
-                      margin: 0, overflow: 'hidden',
-                      textOverflow: 'ellipsis', whiteSpace: 'nowrap'
+                <div
+                  className="shop-card-img"
+                  style={{ background: COLORS[index % COLORS.length] }}
+                >
+                  {shop.logo_url ? (
+                    <img src={shop.logo_url} alt={shop.name} />
+                  ) : (
+                    <span style={{
+                      color: '#fff', fontSize: 24, fontWeight: 700
                     }}>
-                      {shop.name}
-                    </p>
-                    <p style={{
-                      fontSize: 10, color: '#9ca3af',
-                      margin: '2px 0 0', overflow: 'hidden',
-                      textOverflow: 'ellipsis', whiteSpace: 'nowrap'
-                    }}>
-                      {shop.city}
-                    </p>
-                    <p style={{
-                      fontSize: 10, color: '#4f46e5',
-                      margin: '2px 0 0', fontWeight: 500
-                    }}>
-                      {shop.product_count} items
-                    </p>
-                  </div>
+                      {shop.name[0].toUpperCase()}
+                    </span>
+                  )}
+                </div>
+                <div className="shop-card-body">
+                  <p className="shop-card-name">{shop.name}</p>
+                  <p className="shop-card-city">{shop.city}</p>
                 </div>
               </Link>
             ))}

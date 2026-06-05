@@ -8,8 +8,8 @@ export default function Navbar() {
 
   return (
     <nav style={{
-      background: '#4f46e5', position: 'sticky', top: 0, zIndex: 100,
-      boxShadow: '0 2px 8px rgba(79,70,229,0.3)'
+      background: '#000000', position: 'sticky', top: 0, zIndex: 100,
+      boxShadow: '0 2px 8px rgba(161, 5, 5, 0.75)'
     }}>
       <div style={{
         maxWidth: 1200, margin: '0 auto',
@@ -20,10 +20,10 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
           <div style={{
-            width: 34, height: 34, background: '#fff',
+            width: 34, height: 34, background: '#af0000',
             borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center'
           }}>
-            <span style={{ color: '#4f46e5', fontWeight: 800, fontSize: 18 }}>T</span>
+            <span style={{ color: '#ffffff', fontWeight: 800, fontSize: 18 }}>T</span>
           </div>
           <span style={{ color: '#fff', fontWeight: 700, fontSize: 18, letterSpacing: 0.5 }}>
             TrendKart
@@ -41,7 +41,7 @@ export default function Navbar() {
               <button
                 onClick={logoutUser}
                 style={{
-                  background: '#fff', color: '#4f46e5',
+                  background: '#fff', color: '#b10707',
                   border: 'none', borderRadius: 8,
                   padding: '6px 14px', fontSize: 13,
                   fontWeight: 500, cursor: 'pointer'
@@ -52,7 +52,7 @@ export default function Navbar() {
             <>
               <Link to="/login" style={{ color: '#c7d2fe', fontSize: 14, textDecoration: 'none' }}>Login</Link>
               <Link to="/register" style={{
-                background: '#fff', color: '#4f46e5',
+                background: '#fff', color: '#a70505',
                 padding: '6px 14px', borderRadius: 8,
                 fontSize: 13, fontWeight: 500, textDecoration: 'none'
               }}>Register</Link>
@@ -64,7 +64,7 @@ export default function Navbar() {
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           style={{
-            background: 'rgba(255,255,255,0.15)', border: 'none',
+            background: 'rgba(180, 0, 0, 0.81)', border: 'none',
             color: '#fff', borderRadius: 8, padding: '6px 10px',
             fontSize: 18, cursor: 'pointer',
             display: 'none'

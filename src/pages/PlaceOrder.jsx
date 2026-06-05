@@ -291,12 +291,9 @@ export default function PlaceOrder() {
 
       {/* Page header */}
       <div style={{
-        background: 'linear-gradient(135deg, #4f46e5, #4338ca)',
+        background: 'linear-gradient(135deg, #000000, #a10101)',
         padding: '48px 16px 20px'
       }}>
-        <p style={{ color: '#c7d2fe', fontSize: 13, margin: '0 0 4px' }}>
-          TrendKart
-        </p>
         <p style={{ color: '#fff', fontSize: 22, fontWeight: 700, margin: 0 }}>
           Place Order
         </p>

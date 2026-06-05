@@ -62,7 +62,7 @@ export default function ShopDetail() {
 
       {/* Shop header */}
       <div style={{
-        background: 'linear-gradient(135deg, #4f46e5, #4338ca)',
+        background: 'linear-gradient(135deg, #0f0f0f, #880505)',
         padding: '48px 16px 20px'
       }}>
         {isDirect ? (
@@ -198,10 +198,10 @@ export default function ShopDetail() {
                   textDecoration: 'none',
                   display: 'flex',
                   flexDirection: 'column',
-                  background: '#fff',
+                  background: '#070707',
                   borderRadius: 12,
                   overflow: 'hidden',
-                  border: '1px solid #f1f5f9',
+                  border: '1px solid #000000',
                   boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
                 }}
               >
@@ -211,7 +211,7 @@ export default function ShopDetail() {
                   height: 150,
                   minHeight: 150,
                   maxHeight: 150,
-                  background: '#f8fafc',
+                  background: '#0b0c0c',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -251,7 +251,7 @@ export default function ShopDetail() {
                   <p style={{
                     fontSize: 12,
                     fontWeight: 600,
-                    color: '#111827',
+                    color: '#f1f4fc',
                     margin: 0,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -271,7 +271,7 @@ export default function ShopDetail() {
                   <p style={{
                     fontSize: 14,
                     fontWeight: 700,
-                    color: '#4f46e5',
+                    color: '#ffffff',
                     margin: 0,
                   }}>₹{product.price}</p>
                 </div>

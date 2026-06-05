@@ -33,12 +33,9 @@ export default function Products() {
 
       {/* Header */}
       <div style={{
-        background: 'linear-gradient(135deg, #4f46e5, #4338ca)',
+        background: 'linear-gradient(135deg, #000000, #a70000)',
         padding: '48px 16px 20px'
       }}>
-        <p style={{ color: '#c7d2fe', fontSize: 13, margin: '0 0 6px' }}>
-          TrendKart
-        </p>
         <p style={{ color: '#fff', fontSize: 22, fontWeight: 700, margin: 0 }}>
           Search Products
         </p>
@@ -50,7 +47,7 @@ export default function Products() {
         <div style={{
           display: 'flex', alignItems: 'center', gap: 8,
           background: '#fff', borderRadius: 12, padding: '11px 14px',
-          border: '2px solid #4f46e5', marginBottom: 12
+          border: '2px solid #000000', marginBottom: 12
         }}>
           <span style={{ fontSize: 16 }}>🔍</span>
           <input
@@ -69,23 +66,11 @@ export default function Products() {
               onClick={() => setSearch('')}
               style={{
                 background: 'none', border: 'none',
-                color: '#9ca3af', cursor: 'pointer', fontSize: 16
+                color: '#f3f3f3f6', cursor: 'pointer', fontSize: 16
               }}
             >✕</button>
           )}
         </div>
-
-        {/* Hint */}
-        {!search && (
-          <div style={{
-            background: '#eef2ff', borderRadius: 10,
-            padding: '10px 14px', marginBottom: 12
-          }}>
-            <p style={{ fontSize: 12, color: '#6366f1', margin: 0 }}>
-              💡 Try: "blue linen shirt", "white shoes", "size 42"
-            </p>
-          </div>
-        )}
 
         {/* Gender filter */}
         <div style={{
@@ -105,9 +90,9 @@ export default function Products() {
                 flexShrink: 0, padding: '7px 16px',
                 borderRadius: 20, fontSize: 12, fontWeight: 500,
                 cursor: 'pointer',
-                border: gender === g.key ? 'none' : '1px solid #e5e7eb',
-                background: gender === g.key ? '#4f46e5' : '#fff',
-                color: gender === g.key ? '#fff' : '#6b7280',
+                border: gender === g.key ? 'none' : '1px solid #000000',
+                background: gender === g.key ? '#c9acac' : '#a80101b2',
+                color: gender === g.key ? '#ffffff' : '#ffffff',
               }}
             >
               {g.label}
@@ -121,7 +106,6 @@ export default function Products() {
           overflowX: 'auto', scrollbarWidth: 'none'
         }}>
           {[
-            { key: '', label: 'All types' },
             { key: 'clothes', label: '👕 Clothes' },
             { key: 'shoes', label: '👟 Shoes' },
           ].map(t => (
@@ -132,9 +116,9 @@ export default function Products() {
                 flexShrink: 0, padding: '7px 16px',
                 borderRadius: 20, fontSize: 12, fontWeight: 500,
                 cursor: 'pointer',
-                border: type === t.key ? 'none' : '1px solid #e5e7eb',
-                background: type === t.key ? '#4f46e5' : '#fff',
-                color: type === t.key ? '#fff' : '#6b7280',
+                border: type === t.key ? 'none' : '1px solid #000000',
+                background: type === t.key ? '#ffffffc7' : '#a70000',
+                color: type === t.key ? '#ffffff' : '#ffffff',
               }}
             >
               {t.label}
@@ -142,7 +126,7 @@ export default function Products() {
           ))}
         </div>
 
-        <p style={{ fontSize: 12, color: '#9ca3af', marginBottom: 10 }}>
+        <p style={{ fontSize: 12, color: '#ffffff', marginBottom: 10 }}>
           {products.length} products found
           {search ? ` for "${search}"` : ''}
         </p>
@@ -181,10 +165,10 @@ export default function Products() {
                   textDecoration: 'none',
                   display: 'flex',
                   flexDirection: 'column',
-                  background: '#fff',
+                  background: '#000000',
                   borderRadius: 12,
                   overflow: 'hidden',
-                  border: '1px solid #f1f5f9',
+                  border: '1px solid #000000',
                   boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
                 }}
               >
@@ -193,7 +177,7 @@ export default function Products() {
                   height: 150,
                   minHeight: 150,
                   maxHeight: 150,
-                  background: '#f8fafc',
+                  background: '#000000',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -231,24 +215,17 @@ export default function Products() {
                   <p style={{
                     fontSize: 12,
                     fontWeight: 600,
-                    color: '#111827',
+                    color: '#ffffff',
                     margin: 0,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
                   }}>{product.name}</p>
-                  <p style={{
-                    fontSize: 11,
-                    color: '#9ca3af',
-                    margin: 0,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}>{product.shop_name}</p>
+                  
                   {product.colors && (
                     <p style={{
                       fontSize: 10,
-                      color: '#6366f1',
+                      color: '#ffffff',
                       margin: 0,
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
@@ -258,7 +235,7 @@ export default function Products() {
                   <p style={{
                     fontSize: 14,
                     fontWeight: 700,
-                    color: '#4f46e5',
+                    color: '#ffffff',
                     margin: 0,
                   }}>₹{product.price}</p>
                 </div>

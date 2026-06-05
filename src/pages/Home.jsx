@@ -71,7 +71,7 @@ export default function Home() {
           justifyContent: 'center', zIndex: 1000, padding: 16
         }}>
           <div style={{
-            background: '#fff', borderRadius: 20,
+            background: '#000000', borderRadius: 20,
             overflow: 'hidden', width: '100%', maxWidth: 360,
             position: 'relative'
           }}>
@@ -102,10 +102,10 @@ export default function Home() {
               justifyContent: 'space-between'
             }}>
               <div>
-                <p style={{ fontWeight: 600, fontSize: 14, margin: 0 }}>
+                <p style={{ fontWeight: 600, color: '#ffffff',  fontSize: 14, margin: 0 }}>
                   {popupAd.shop?.name}
                 </p>
-                <p style={{ color: '#9ca3af', fontSize: 12, margin: 0 }}>
+                <p style={{ color: '#ffffff', fontSize: 12, margin: 0 }}>
                   {popupAd.shop?.city}
                 </p>
               </div>
@@ -113,7 +113,7 @@ export default function Home() {
                 to={`/shop/${popupAd.shop?.id}`}
                 onClick={() => setShowPopup(false)}
                 style={{
-                  background: '#4f46e5', color: '#fff',
+                  background: '#a70000', color: '#fff',
                   padding: '8px 16px', borderRadius: 20,
                   textDecoration: 'none', fontSize: 13, fontWeight: 500
                 }}
@@ -125,7 +125,7 @@ export default function Home() {
 
       {/* Header */}
       <div style={{
-        background: '#4f46e5',
+        background: '#010105',
         padding: '10px 14px 14px',
         display: 'flex',
         flexDirection: 'column',
@@ -169,7 +169,7 @@ export default function Home() {
           display: 'flex',
           alignItems: 'center',
           gap: 8,
-          background: '#6d74d6',
+          background: '#c6c6ca',
           borderRadius: 8,
           padding: '10px 14px',
         }}>
@@ -246,9 +246,9 @@ export default function Home() {
         {/* Gender filter */}
         <div className="gender-filter">
           {[
-            { key: 'men', label: '👔 Men', color: '#024f7c' },
-            { key: 'women', label: '👗 Women', color: '#003496' },
-            { key: 'kids', label: '🧒 Kids', color: '#051ca1' },
+            { key: 'men', label: '👔 Men', color: '#a50505' },
+            { key: 'women', label: '👗 Women', color: '#aa0202' },
+            { key: 'kids', label: '🧒 Kids', color: '#ad0202' },
           ].map(g => (
             <button
               key={g.key}
@@ -322,7 +322,7 @@ export default function Home() {
         <div className="section-header" style={{ marginTop: 8 }}>
           <span className="section-title">Featured Products</span>
           <Link to="/products" style={{
-            color: '#4f46e5', fontSize: 13,
+            color: '#ffffff', fontSize: 13,
             fontWeight: 500, textDecoration: 'none'
           }}>
             View all →
@@ -338,10 +338,10 @@ export default function Home() {
                 textDecoration: 'none',
                 display: 'flex',
                 flexDirection: 'column',
-                background: '#fff',
+                background: '#000000',
                 borderRadius: 12,
                 overflow: 'hidden',
-                border: '1px solid #f1f5f9',
+                border: '1px solid #000000',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
               }}
             >
@@ -350,7 +350,7 @@ export default function Home() {
                 height: 150,
                 minHeight: 150,
                 maxHeight: 150,
-                background: '#f8fafc',
+                background: '#000000',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -388,24 +388,24 @@ export default function Home() {
                 <p style={{
                   fontSize: 12,
                   fontWeight: 600,
-                  color: '#111827',
+                  color: '#ffffff',
                   margin: 0,
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
                 }}>{product.name}</p>
                 <p style={{
-                  fontSize: 11,
-                  color: '#9ca3af',
-                  margin: 0,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}>{product.shop_name}</p>
+                      fontSize: 10,
+                      color: '#ffffff',
+                      margin: 0,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}>{product.colors}</p>
                 <p style={{
                   fontSize: 14,
                   fontWeight: 700,
-                  color: '#4f46e5',
+                  color: '#ffffff',
                   margin: 0,
                 }}>₹{product.price}</p>
               </div>
