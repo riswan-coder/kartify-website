@@ -189,13 +189,7 @@ export default function ShopDetail() {
             <p>No products found</p>
           </div>
         ) : (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 10,
-            padding: '0 14px',
-            marginBottom: 24,
-          }}>
+          <div className="featured-grid">
             {filtered.map(product => (
               <Link
                 key={product.id}
