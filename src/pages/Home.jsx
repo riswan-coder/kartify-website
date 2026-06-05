@@ -329,13 +329,7 @@ export default function Home() {
           </Link>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 10,
-          padding: '0 14px',
-          marginBottom: 24,
-        }}>
+        <div className="featured-grid">
           {featuredProducts.map(product => (
             <Link
               key={product.id}
