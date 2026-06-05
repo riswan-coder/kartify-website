@@ -78,7 +78,7 @@ export default function Navbar() {
       {/* Mobile dropdown */}
       {menuOpen && (
         <div style={{
-          background: '#4338ca',
+          background: '#000000',
           padding: '8px 16px 16px',
           display: 'flex', flexDirection: 'column', gap: 4
         }}>
@@ -114,7 +114,7 @@ export default function Navbar() {
                 textDecoration: 'none', fontSize: 14
               }}>🔑 Login</Link>
               <Link to="/register" onClick={() => setMenuOpen(false)} style={{
-                background: '#fff', color: '#4f46e5',
+                background: '#ffffff', color: '#a8040d',
                 padding: '10px', borderRadius: 8,
                 textDecoration: 'none', fontSize: 14,
                 fontWeight: 600, textAlign: 'center',
