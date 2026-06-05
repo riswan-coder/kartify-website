@@ -31,10 +31,21 @@ body {
 }
 
 .page-wrapper {
-  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background: #fff;
   min-height: 100vh;
 }
 
+@media (min-width: 768px) {
+  .page-wrapper {
+    max-width: 1200px;
+  }
+
+  body {
+    background: #f1f5f9;
+  }
+}
 .purple-header {
   background: linear-gradient(135deg, #4f46e5, #4338ca);
   padding: 16px 0;
@@ -206,13 +217,13 @@ body {
   align-items: center;
   margin-bottom: 0;
   background: #fff;
-  padding: 16px 20px;
+  padding: 5px 8px;
   border-radius: 8px 8px 0 0;
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 
 .section-title {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 700;
   color: #111827;
 }
@@ -505,3 +516,46 @@ nav {
   }
 }
 
+/* ===== LAPTOP LAYOUT ===== */
+@media (min-width: 768px) {
+
+  /* Featured products — 4 per row on laptop */
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 12px;
+    padding: 0 14px;
+    margin-bottom: 24px;
+  }
+
+  /* Shop detail products — 3 per row on laptop */
+  .shop-product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px;
+    padding: 0 14px;
+    margin-bottom: 24px;
+  }
+
+  /* Products page — 4 per row on laptop */
+  .all-product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 12px;
+    padding: 0 14px;
+    margin-bottom: 24px;
+  }
+}
+
+/* Mobile — keep 2 per row */
+@media (max-width: 767px) {
+  .featured-grid,
+  .shop-product-grid,
+  .all-product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0 14px;
+    margin-bottom: 24px;
+  }
+}

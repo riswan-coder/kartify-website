@@ -172,50 +172,32 @@ export default function Products() {
             )}
           </div>
         ) : (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 10,
-            padding: '0 14px',
-            marginBottom: 24,
-          }}>
-            {products.map(product => (
-              <Link
-                key={product.id}
-                to={`/product/${product.id}`}
-                style={{
-                  textDecoration: 'none',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  background: '#fff',
-                  borderRadius: 12,
-                  overflow: 'hidden',
-                  border: '1px solid #f1f5f9',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-                }}
-              >
+          <div className="all-product-grid">
+          {products.map(product => (
+            <Link
+              key={product.id}
+              to={`/product/${product.id}`}
+              style={{ textDecoration: 'none' }}
+            >
+              <div style={{
+                background: '#fff', borderRadius: 12,
+                overflow: 'hidden', border: '1px solid #f1f5f9',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                display: 'flex', flexDirection: 'column',
+              }}>
                 <div style={{
-                  width: '100%',
-                  height: 150,
-                  minHeight: 150,
-                  maxHeight: 150,
+                  height: 150, minHeight: 150, maxHeight: 150,
                   background: '#f8fafc',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  overflow: 'hidden',
-                  flexShrink: 0,
+                  display: 'flex', alignItems: 'center',
+                  justifyContent: 'center', overflow: 'hidden', flexShrink: 0,
                 }}>
                   {product.images?.[0]?.image ? (
                     <img
                       src={product.images[0].image}
                       alt={product.name}
                       style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'contain',
-                        padding: 6,
-                        display: 'block',
+                        width: '100%', height: '100%',
+                        objectFit: 'contain', padding: 6, display: 'block',
                       }}
                     />
                   ) : (
@@ -226,51 +208,34 @@ export default function Products() {
                 </div>
                 <div style={{
                   padding: '8px 10px',
-                  height: 70,
-                  minHeight: 70,
-                  maxHeight: 70,
+                  height: 72, minHeight: 72, maxHeight: 72,
                   overflow: 'hidden',
-                  display: 'flex',
-                  flexDirection: 'column',
+                  display: 'flex', flexDirection: 'column',
                   justifyContent: 'space-between',
                 }}>
                   <p style={{
-                    fontSize: 12,
-                    fontWeight: 600,
-                    color: '#111827',
-                    margin: 0,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
+                    fontSize: 12, fontWeight: 600, color: '#111827',
+                    margin: 0, overflow: 'hidden',
+                    textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                   }}>{product.name}</p>
                   <p style={{
-                    fontSize: 11,
-                    color: '#9ca3af',
-                    margin: 0,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
+                    fontSize: 11, color: '#9ca3af', margin: 0,
+                    overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                   }}>{product.shop_name}</p>
                   {product.colors && (
                     <p style={{
-                      fontSize: 10,
-                      color: '#6366f1',
-                      margin: 0,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
+                      fontSize: 10, color: '#6366f1', margin: 0,
+                      overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                     }}>{product.colors}</p>
                   )}
                   <p style={{
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: '#4f46e5',
-                    margin: 0,
+                    fontSize: 14, fontWeight: 700, color: '#4f46e5', margin: 0,
                   }}>₹{product.price}</p>
                 </div>
-              </Link>
-            ))}
-          </div>
+              </div>
+            </Link>
+          ))}
+        </div>
         )}
 
       </div>
