@@ -23,12 +23,12 @@ export default function Home() {
   useEffect(() => {
     Promise.all([
       getShops(),
-      getProducts({}),
+      getProducts({ ordering: '-created_at' }),,
       getBannerAds(),
       getPopupAd(),
     ]).then(([shopsRes, productsRes, bannersRes, popupRes]) => {
       setShops(shopsRes.data);
-      setFeaturedProducts(productsRes.data.slice(0, 8));
+      setFeaturedProducts(productsRes.data.slice(0, 10));
       if (Array.isArray(bannersRes.data) && bannersRes.data.length > 0) {
         setBannerAds(bannersRes.data);
       }
@@ -322,7 +322,7 @@ export default function Home() {
         <div className="section-header" style={{ marginTop: 8 }}>
           <span className="section-title">Featured Products</span>
           <Link to="/products" style={{
-            color: '#ffffff', fontSize: 13,
+            color: '#4f46e5', fontSize: 13,
             fontWeight: 500, textDecoration: 'none'
           }}>
             View all →
@@ -330,87 +330,109 @@ export default function Home() {
         </div>
 
         <div className="featured-grid">
-          {featuredProducts.map(product => (
+          {featuredProducts.slice(0, 10).map(product => (
             <Link
               key={product.id}
               to={`/product/${product.id}`}
-              style={{
-                textDecoration: 'none',
-                display: 'flex',
-                flexDirection: 'column',
-                background: '#000000',
-                borderRadius: 12,
-                overflow: 'hidden',
-                border: '1px solid #000000',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-              }}
+              style={{ textDecoration: 'none' }}
             >
               <div style={{
-                width: '100%',
-                height: 150,
-                minHeight: 150,
-                maxHeight: 150,
-                background: '#000000',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'hidden',
-                flexShrink: 0,
-              }}>
-                {product.images?.[0]?.image ? (
-                  <img
-                    src={product.images[0].image}
-                    alt={product.name}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'contain',
-                      padding: 6,
-                      display: 'block',
-                    }}
-                  />
-                ) : (
-                  <span style={{ fontSize: 44 }}>
-                    {product.category?.product_type === 'shoes' ? '👟' : '👕'}
-                  </span>
-                )}
-              </div>
-              <div style={{
-                padding: '8px 10px',
-                height: 70,
-                minHeight: 70,
-                maxHeight: 70,
-                overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between',
+                background: '#fff',
+                borderRadius: 12,
+                overflow: 'hidden',
+                border: '1px solid #f1f5f9',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
               }}>
-                <p style={{
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: '#ffffff',
-                  margin: 0,
+                <div style={{
+                  width: '100%',
+                  height: 150,
+                  minHeight: 150,
+                  maxHeight: 150,
+                  background: '#f8fafc',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}>{product.name}</p>
-                <p style={{
-                      fontSize: 10,
-                      color: '#ffffff',
-                      margin: 0,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}>{product.colors}</p>
-                <p style={{
-                  fontSize: 14,
-                  fontWeight: 700,
-                  color: '#ffffff',
-                  margin: 0,
-                }}>₹{product.price}</p>
+                  flexShrink: 0,
+                }}>
+                  {product.images?.[0]?.image ? (
+                    <img
+                      src={product.images[0].image}
+                      alt={product.name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        padding: 6,
+                        display: 'block',
+                      }}
+                    />
+                  ) : (
+                    <span style={{ fontSize: 44 }}>
+                      {product.category?.product_type === 'shoes' ? '👟' : '👕'}
+                    </span>
+                  )}
+                </div>
+                <div style={{
+                  padding: '8px 10px',
+                  height: 70,
+                  minHeight: 70,
+                  maxHeight: 70,
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                }}>
+                  <p style={{
+                    fontSize: 12,
+                    fontWeight: 600,
+                    color: '#111827',
+                    margin: 0,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}>{product.name}</p>
+                  <p style={{
+                    fontSize: 10,
+                    color: '#9ca3af',
+                    margin: 0,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}>{product.shop_name}</p>
+                  <p style={{
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: '#4f46e5',
+                    margin: 0,
+                  }}>₹{product.price}</p>
+                </div>
               </div>
             </Link>
           ))}
+        </div>
+
+        {/* View all button */}
+        <div style={{ padding: '0 14px 24px', textAlign: 'center' }}>
+          <Link
+            to="/products"
+            style={{
+              display: 'inline-block',
+              width: '100%',
+              padding: '13px',
+              background: '#4f46e5',
+              color: '#fff',
+              borderRadius: 12,
+              textDecoration: 'none',
+              fontSize: 14,
+              fontWeight: 600,
+              textAlign: 'center',
+            }}
+          >
+            View All Products →
+          </Link>
         </div>
 
         <div style={{ height: 24 }} />
